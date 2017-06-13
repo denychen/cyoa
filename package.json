@@ -1,0 +1,9 @@
+{
+  "name": "cyoa",
+  "version": "1.0.0",
+  "description": "Choose your own adventure",
+  "main": "index.js",
+  "repository": "git@gitlab.com:deny.chen/cyoa.git",
+  "author": "Deny Chen <deny.chen@gmail.com>",
+  "license": "MIT"
+}
