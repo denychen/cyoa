@@ -5,5 +5,8 @@
   "main": "index.js",
   "repository": "git@gitlab.com:deny.chen/cyoa.git",
   "author": "Deny Chen <deny.chen@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.15.3"
+  }
 }
