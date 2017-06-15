@@ -1,11 +1,12 @@
 'use strict';
 module.exports = function(sequelize, DataTypes) {
   var Story = sequelize.define('Story', {
-    title: DataTypes.TEXT
+    title: DataTypes.TEXT,
+    firstPageId: DataTypes.INTEGER,
   }, {
     classMethods: {
       associate: function(models) {
-        // associations can be defined here
+        Story.hasOne(models.Page)
       }
     }
   });
