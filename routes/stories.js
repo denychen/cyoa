@@ -6,9 +6,15 @@ var models = require('../models');
 /* GET stories listing. */
 router.get('/', function(req, res, next) {
   models.Story.findAll().then(function(stories) {
-    res.json({
-      stories: stories
+    let serializedStories = stories.map(function(story) {
+      return {
+        id: story.id,
+        firstPageId: story.firstPageId,
+        title: story.title
+      };
     });
+
+    res.json(serializedStories);
   });
 });
 
