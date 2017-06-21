@@ -5,10 +5,10 @@ var models = require('../models');
 module.exports = function(sequelize, DataTypes) {
   var PageRoute = sequelize.define('PageRoute', {
     id: {
+      type: DataTypes.INTEGER,
       allowNull: false,
       autoIncrement: true,
-      primaryKey: true,
-      type: DataTypes.INTEGER
+      primaryKey: true
     },
     originId: {
       type: DataTypes.INTEGER,
@@ -33,20 +33,19 @@ module.exports = function(sequelize, DataTypes) {
       defaultValue: sequelize.literal('NOW()')
     }
   }, {
-    timestamps: true,
     classMethods: {
       associate: function(models) {
         PageRoute.hasMany(models.Page, { 
           as: 'origin',
           constraints: false,
-          foreignKey: 'id',
-          sourceKey: 'originId'
+          sourceKey: 'originId',
+          foreignKey: 'id'
         });
         PageRoute.hasMany(models.Page, { 
           as: 'destination',
           constraints: false,
-          foreignKey: 'id',
-          sourceKey: 'destinationId'
+          sourceKey: 'destinationId',
+          foreignKey: 'id'
         });
       }
     }

@@ -8,8 +8,7 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.INTEGER,
       allowNull: false,
       autoIncrement: true,
-      primaryKey: true,
-      foreignKey: null
+      primaryKey: true
     },
     storyId: {
       type: DataTypes.INTEGER,
@@ -29,29 +28,28 @@ module.exports = function(sequelize, DataTypes) {
       defaultValue: sequelize.literal('NOW()')
     }
   }, {
-    timestamps: true,
     classMethods: {
       associate: (models) => {
         Page.belongsTo(models.Story, {
           foreignKey: 'storyId'
         });
-        Page.belongsToMany(models.PageRoute, { 
-          as: 'origin',
+        Page.belongsToMany(models.Page, { 
+          as: 'origins',
           through: {
             model: models.PageRoute,
             unique: false
           },
-          otherKey: 'id',
-          foreignKey: 'originId'
+          foreignKey: 'destinationId',
+          otherKey: 'originId'
         });
-        Page.belongsToMany(models.PageRoute, { 
-          as: 'destination',
+        Page.belongsToMany(models.Page, { 
+          as: 'destinations',
           through: {
             model: models.PageRoute,
             unique: false
           },
-          otherKey: 'id',
-          foreignKey: 'destinationId'
+          foreignKey: 'originId',
+          otherKey: 'destinationId'
         });
       }
     }

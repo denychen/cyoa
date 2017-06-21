@@ -7,8 +7,8 @@ var models = require('../models');
 router.get('/:pageId', function(req, res, next) {
   models.Page.findAll({
     include: [{
-      model: models.PageRoute,
-      as: 'destination',
+      model: models.Page,
+      as: 'destinations',
       where: { id: req.params.pageId }
     }]
   }).then(function(page) {

@@ -18,12 +18,14 @@ module.exports = function(sequelize, DataTypes) {
       defaultValue: sequelize.literal('NOW()')
     }
   }, {
-    timestamps: true,
     classMethods: {
       associate: function(models) {
-        Story.hasMany(models.Page, {
-          foreignKey: 'storyId'
-        })
+        Story.belongsTo(models.Page, {
+          as: 'firstPage',
+          constraints: false,
+          foreignKey: 'firstPageId',
+          targetKey: 'id'
+        });
       }
     }
   });
