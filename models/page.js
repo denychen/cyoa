@@ -5,13 +5,13 @@ var models = require('../models');
 module.exports = function(sequelize, DataTypes) {
   let Page = sequelize.define('Page', {
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
       allowNull: false,
-      autoIncrement: true,
       primaryKey: true
     },
     storyId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false,
       references: {
         model: models.Story,
