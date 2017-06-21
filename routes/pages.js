@@ -3,18 +3,24 @@ var router = express.Router();
 
 var models = require('../models');
 
-/* GET stories listing. */
+/* GET page listing. */
 router.get('/:pageId', function(req, res, next) {
-  models.Page.findAll({
+  models.Page.find({
     include: [{
       model: models.Page,
-      as: 'destinations',
-      where: { id: req.params.pageId }
-    }]
+      as: 'destinations'
+    }],
+    where: { id: req.params.pageId }
   }).then(function(page) {
+    let destinationIds = page.destinations.map(page => {
+      return {
+        id: page.id
+      }
+    });
+    
     res.json({
-      id: page.id,
-      content: page.content
+      content: page.content,
+      destinations: destinationIds
     });
   });
 });
