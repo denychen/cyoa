@@ -24,6 +24,8 @@ module.exports = function(sequelize, DataTypes) {
         key: 'id'
       }
     },
+    option: DataTypes.STRING,
+    order: DataTypes.INTEGER,
     createdAt: {
       type: DataTypes.DATE,
       defaultValue: sequelize.literal('NOW()')
