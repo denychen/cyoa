@@ -15,6 +15,7 @@ router.get('/:pageId', function(req, res, next) {
     });
     
     res.json({
+      id: page.id,
       content: page.content,
       destinations: destinationIds
     });
