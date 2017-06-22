@@ -1,17 +1,13 @@
+'use strict';
+
 var express = require('express');
 var router = express.Router();
 
-var models = require('../models');
+var pagesController = require('../controllers/pages');
 
 /* GET page listing. */
 router.get('/:pageId', function(req, res, next) {
-  models.Page.find({
-    include: [{
-      model: models.Page,
-      as: 'destinations'
-    }],
-    where: { id: req.params.pageId }
-  }).then(function(page) {
+  pagesController.findPageAndNextPagesById(req.params.pageId).then(function(page) {
     let destinationIds = page.destinations.map(page => {
       return {
         id: page.id

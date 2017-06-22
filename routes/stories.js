@@ -1,20 +1,14 @@
+'use strict';
+
 var express = require('express');
 var router = express.Router();
 
-var models = require('../models');
+var storiesController = require('../controllers/stories');
 
 /* GET stories listing. */
 router.get('/', function(req, res, next) {
-  models.Story.findAll().then(function(stories) {
-    let serializedStories = stories.map(function(story) {
-      return {
-        id: story.id,
-        firstPageId: story.firstPageId,
-        title: story.title
-      };
-    });
-
-    res.json(serializedStories);
+  storiesController.findAll().then(stories => {
+    res.json(stories);
   });
 });
 
