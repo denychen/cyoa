@@ -4,12 +4,6 @@ var models = require('../models');
 
 module.exports = function(sequelize, DataTypes) {
   var PageRoute = sequelize.define('PageRoute', {
-    id: {
-      type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
-      allowNull: false,
-      primaryKey: true
-    },
     originId: {
       type: DataTypes.UUID,
       references: {
