@@ -1,6 +1,6 @@
 'use strict';
 
-var Page = require('../models').Page;
+const Page = require('../models').Page;
 
 module.exports = {
   findPageAndNextPagesById(id) {
