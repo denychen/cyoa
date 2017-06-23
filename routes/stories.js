@@ -5,9 +5,16 @@ var router = express.Router();
 
 var storiesController = require('../controllers/stories');
 
-/* GET stories listing. */
+/* GET all story listings */
 router.get('/', function(req, res, next) {
   storiesController.findAll().then(stories => {
+    res.json(stories);
+  });
+});
+
+/* GET story listing */
+router.get('/:storyId', function(req, res, next) {
+  storiesController.findById(req.params.storyId).then(stories => {
     res.json(stories);
   });
 });
