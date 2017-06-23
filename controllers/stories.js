@@ -9,7 +9,8 @@ module.exports = {
       return stories.map(story => {
         return {
           id: story.id,
-          title: story.title
+          title: story.title,
+          createdAt: story.createdAt
         };
       });
     });
