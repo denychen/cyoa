@@ -26,6 +26,11 @@ module.exports = function(sequelize, DataTypes) {
           foreignKey: 'firstPageId',
           targetKey: 'id'
         });
+        Story.belongsToMany(models.Genre, { 
+          through: 'GenreStory',
+          foreignKey: 'storyId',
+          otherKey: 'genreId'
+        });
       }
     }
   });
