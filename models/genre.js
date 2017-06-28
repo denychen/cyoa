@@ -7,7 +7,10 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       primaryKey: true
     },
-    genre: DataTypes.TEXT,
+    genre: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
     createdAt: {
       type: DataTypes.DATE,
       defaultValue: sequelize.literal('NOW()')

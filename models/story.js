@@ -8,14 +8,17 @@ module.exports = function(sequelize, DataTypes) {
       primaryKey: true
     },
     title: DataTypes.TEXT,
+    description: DataTypes.TEXT,
     firstPageId: DataTypes.UUID,
     createdAt: {
       type: DataTypes.DATE,
-      defaultValue: sequelize.literal('NOW()')
+      defaultValue: sequelize.literal('NOW()'),
+      allowNull: false,
     },
     updatedAt: {
       type: DataTypes.DATE,
-      defaultValue: sequelize.literal('NOW()')
+      defaultValue: sequelize.literal('NOW()'),
+      allowNull: false,
     }
   }, {
     classMethods: {
