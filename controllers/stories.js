@@ -10,6 +10,7 @@ module.exports = {
         return {
           id: story.id,
           title: story.title,
+          description: story.description,
           createdAt: story.createdAt
         };
       });
@@ -30,6 +31,7 @@ module.exports = {
       return {
         id: story.id,
         title: story.title,
+        description: story.description,
         firstPageId: story.firstPageId,
         genres: genres
       }
