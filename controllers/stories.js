@@ -8,7 +8,7 @@ module.exports = {
     return Story.findAll().then(stories => {
       return stories.map(story => {
         let shortenedDescription = story.description;
-        let maxDescriptionLength = 14di0;
+        let maxDescriptionLength = 140;
 
         if (shortenedDescription.length > maxDescriptionLength) {
           shortenedDescription = shortenedDescription.substring(0, maxDescriptionLength).concat('…');
