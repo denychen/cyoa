@@ -5,33 +5,58 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
       allowNull: false,
-      primaryKey: true
+      primaryKey: true,
+      validate: {
+        notEmpty: true,
+        isUUID: 4
+      }
     },
     username: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true
+      unique: true,
+      validate: {
+        notEmpty: true
+      }
     },
     email: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true
+      unique: true,
+      validate: {
+        notEmpty: true,
+        isEmail: true
+      }
     },
     password: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+      }
     },
     lastLogin: {
       type: DataTypes.DATE,
-      defaultValue: sequelize.literal('NOW()')
+      defaultValue: sequelize.literal('NOW()'),
+      validate: {
+        notEmpty: true
+      }
     },
     createdAt: {
       type: DataTypes.DATE,
-      defaultValue: sequelize.literal('NOW()')
+      defaultValue: sequelize.literal('NOW()'),
+      allowNull: false,
+      validate: {
+        notEmpty: true
+      }
     },
     updatedAt: {
       type: DataTypes.DATE,
-      defaultValue: sequelize.literal('NOW()')
+      defaultValue: sequelize.literal('NOW()'),
+      allowNull: false,
+      validate: {
+        notEmpty: true
+      }
     }
   }, {
     classMethods: {

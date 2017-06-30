@@ -5,7 +5,11 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       allowNull: false,
-      primaryKey: true
+      primaryKey: true,
+      validate: {
+        notEmpty: true,
+        isInt: true
+      }
     },
     genre: {
       type: DataTypes.STRING,
@@ -13,11 +17,19 @@ module.exports = function(sequelize, DataTypes) {
     },
     createdAt: {
       type: DataTypes.DATE,
-      defaultValue: sequelize.literal('NOW()')
+      defaultValue: sequelize.literal('NOW()'),
+      allowNull: false,
+      validate: {
+        notEmpty: true
+      }
     },
     updatedAt: {
       type: DataTypes.DATE,
-      defaultValue: sequelize.literal('NOW()')
+      defaultValue: sequelize.literal('NOW()'),
+      allowNull: false,
+      validate: {
+        notEmpty: true
+      }
     }
   }, {
     classMethods: {

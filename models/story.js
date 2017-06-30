@@ -5,20 +5,42 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
       allowNull: false,
-      primaryKey: true
+      primaryKey: true,
+      validate: {
+        notEmpty: true,
+        isUUID: 4
+      }
     },
-    title: DataTypes.TEXT,
+    title: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+      validate: {
+        notEmpty: true
+      }
+    },
     description: DataTypes.TEXT,
-    firstPageId: DataTypes.UUID,
+    firstPageId: {
+      type: DataTypes.UUID,
+      validate: {
+        notEmpty: true,
+        isUUID: 4
+      }
+    },
     createdAt: {
       type: DataTypes.DATE,
       defaultValue: sequelize.literal('NOW()'),
       allowNull: false,
+      validate: {
+        notEmpty: true
+      }
     },
     updatedAt: {
       type: DataTypes.DATE,
       defaultValue: sequelize.literal('NOW()'),
       allowNull: false,
+      validate: {
+        notEmpty: true
+      }
     }
   }, {
     classMethods: {

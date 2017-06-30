@@ -9,6 +9,10 @@ module.exports = function(sequelize, DataTypes) {
       references: {
         model: models.Page,
         key: 'id'
+      },
+      validate: {
+        notEmpty: true,
+        isUUID: 4
       }
     },
     destinationId: {
@@ -16,17 +20,40 @@ module.exports = function(sequelize, DataTypes) {
       references: {
         model: models.Page,
         key: 'id'
+      },
+      validate: {
+        notEmpty: true,
+        isUUID: 4
       }
     },
-    option: DataTypes.STRING,
-    order: DataTypes.INTEGER,
+    option: {
+      type: DataTypes.STRING,
+      validate: {
+        notNull: true
+      }
+    },
+    order: {
+      type: DataTypes.INTEGER,
+      validate: {
+        notEmpty: true,
+        isNumeric: true
+      }
+    },
     createdAt: {
       type: DataTypes.DATE,
-      defaultValue: sequelize.literal('NOW()')
+      defaultValue: sequelize.literal('NOW()'),
+      allowNull: false,
+      validate: {
+        notEmpty: true
+      }
     },
     updatedAt: {
       type: DataTypes.DATE,
-      defaultValue: sequelize.literal('NOW()')
+      defaultValue: sequelize.literal('NOW()'),
+      allowNull: false,
+      validate: {
+        notEmpty: true
+      }
     }
   }, {
     classMethods: {

@@ -8,7 +8,11 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
       allowNull: false,
-      primaryKey: true
+      primaryKey: true,
+      validate: {
+        notEmpty: true,
+        isUUID: 4
+      }
     },
     storyId: {
       type: DataTypes.UUID,
@@ -16,16 +20,28 @@ module.exports = function(sequelize, DataTypes) {
       references: {
         model: models.Story,
         key: 'id'
+      },
+      validate: {
+        notEmpty: true,
+        isUUID: 4
       }
     },
     content: DataTypes.TEXT,
     createdAt: {
       type: DataTypes.DATE,
-      defaultValue: sequelize.literal('NOW()')
+      defaultValue: sequelize.literal('NOW()'),
+      allowNull: false,
+      validate: {
+        notEmpty: true
+      }
     },
     updatedAt: {
       type: DataTypes.DATE,
-      defaultValue: sequelize.literal('NOW()')
+      defaultValue: sequelize.literal('NOW()'),
+      allowNull: false,
+      validate: {
+        notEmpty: true
+      }
     }
   }, {
     classMethods: {

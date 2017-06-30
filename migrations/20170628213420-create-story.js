@@ -9,7 +9,8 @@ module.exports = {
         primaryKey: true
       },
       title: {
-        type: Sequelize.TEXT
+        type: Sequelize.TEXT,
+        allowNull: false,
       },
       description: {
         type: Sequelize.TEXT
