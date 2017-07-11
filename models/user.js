@@ -37,6 +37,10 @@ module.exports = function(sequelize, DataTypes) {
         notEmpty: true,
       }
     },
+    token: {
+      type: DataTypes.STRING,
+      unique: true,
+    },
     lastLogin: {
       type: DataTypes.DATE,
       defaultValue: sequelize.literal('NOW()'),
@@ -73,6 +77,10 @@ module.exports = function(sequelize, DataTypes) {
       user.password = hashedPassword;
     });
   });
+
+  User.prototype.validatePassword = function(password) {
+    return bcrypt.compare(password, this.password);
+  };
 
   return User;
 };
