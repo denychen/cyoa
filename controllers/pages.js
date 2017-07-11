@@ -1,5 +1,6 @@
 'use strict';
 
+const Sequelize = require('sequelize');
 const Page = require('../models').Page;
 
 module.exports = {
@@ -12,6 +13,9 @@ module.exports = {
         },
         as: 'destinations'
       }],
+      order: [
+        [Sequelize.literal('`destinations.PageRoute.order`'), 'ASC']
+      ],
       where: { id: id }
     });
   }
