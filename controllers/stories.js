@@ -2,8 +2,27 @@
 
 const Story = require('../models').Story;
 const Genre = require('../models').Genre;
+const GenreStory = require('../models').GenreStory;
 
 module.exports = {
+  create(title, description, genres) {
+    let newStory = new Story({
+      title: title,
+      description: description
+    });
+
+    return newStory.save().then(story => {
+      let newGenreStory = genres.map(genre => {
+        return {
+          genreId: genre.id,
+          storyId: story.id
+        }
+      })
+
+      return GenreStory.bulkCreate(newGenreStory);
+    });
+  },
+
   findAll() {
     return Story.findAll().then(stories => {
       return stories.map(story => {
