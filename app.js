@@ -9,6 +9,7 @@ var index = require('./routes/index');
 var users = require('./routes/users');
 var stories = require('./routes/stories');
 var pages = require('./routes/pages');
+var genres = require('./routes/genres');
 
 var app = express();
 
