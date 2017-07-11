@@ -6,11 +6,10 @@ var usersController = require('../controllers/users');
 /* POST users */
 router.post('/', function(req, res, next) {
   usersController.signup(req.body.email, req.body.password, req.body.username).then(user => {
-    res.json({
+    res.cookie('token', user.token).json({
       id: user.id,
       email: user.email,
-      username: user.username,
-      token: user.token
+      username: user.username
     });
   }).catch(error => {
     res.status(400).json({
