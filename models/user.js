@@ -75,18 +75,7 @@ module.exports = function(sequelize, DataTypes) {
     }
   });
 
-  let generateToken = function(userId) {
-    let expiration = moment().add(7, 'days').valueOf();
-
-    return jwt.encode({
-      iss: userId,
-      exp: expiration
-    }, config.jwtTokenSecret);
-  };
-
   User.beforeCreate((user, options) => {
-    user.token = generateToken(user.id);
-
     return bcrypt.hash(user.password, 10).then(hashedPassword => {
       user.password = hashedPassword;
     });
@@ -94,6 +83,15 @@ module.exports = function(sequelize, DataTypes) {
 
   User.prototype.validatePassword = function(password) {
     return bcrypt.compare(password, this.password);
+  };
+
+  User.prototype.generateToken = function() {
+    let expiration = moment().add(7, 'days').valueOf();
+
+    return jwt.encode({
+      iss: this.id,
+      exp: expiration
+    }, config.jwtTokenSecret);
   };
 
   return User;
