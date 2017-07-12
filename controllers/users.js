@@ -20,5 +20,13 @@ module.exports = {
         email: email
       }
     });
+  },
+
+  signout(userId) {
+    return User.findOne({
+      where: {
+        id: userId
+      }
+    });
   }
 };

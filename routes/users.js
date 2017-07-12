@@ -23,33 +23,40 @@ router.post('/signin', function(req, res, next) {
   let email = req.body.email;
   let password = req.body.password;
 
-  let result = usersController.signin(email, password).then(user => {
-      if (!user) {
-        return null;
-      }
+  usersController.signin(email, password).then(user => {
+    if (!user) {
+      return null;
+    }
 
-      user.validatePassword(password).then(valid => {
-        if (valid) {
-          user.token = user.generateToken();
-          user.save().then(user => {
-            res.json({
-              id: user.id,
-              email: user.email,
-              username: user.username,
-              token: user.token
-            });
+    user.validatePassword(password).then(valid => {
+      if (valid) {
+        user.token = user.generateToken();
+        user.save().then(user => {
+          res.json({
+            id: user.id,
+            email: user.email,
+            username: user.username,
+            token: user.token
           });
-        } else {
-          res.status(400).json({
-            message: 'Failed signin'
-          });
-        }
-      });
+        });
+      } else {
+        res.status(400).json({
+          message: 'Failed signin'
+        });
+      }
     });
+  });
 });
 
 router.delete('/signout', function(req, res, next) {
-  
+  let userId = req.body.userId;
+
+  usersController.signout(userId).then((user) => {
+    user.token = null;
+    user.save();
+    
+    res.status(200).json({});
+  });
 });
 
 module.exports = router;
