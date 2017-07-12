@@ -12,5 +12,13 @@ module.exports = {
     });
 
     return newUser.save();
+  },
+
+  signin(email, password) {
+    return User.findOne({
+      where: {
+        email: email
+      }
+    });
   }
 };
