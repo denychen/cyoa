@@ -1,5 +1,8 @@
 'use strict';
 let bcrypt = require('bcrypt');
+let jwt = require('jwt-simple');
+let moment = require('moment');
+let config = require('../config/config.json');
 
 module.exports = function(sequelize, DataTypes) {
   var User = sequelize.define('User', {
@@ -72,7 +75,18 @@ module.exports = function(sequelize, DataTypes) {
     }
   });
 
+  let generateToken = function(userId) {
+    let expiration = moment().add(7, 'days').valueOf();
+
+    return jwt.encode({
+      iss: userId,
+      exp: expiration
+    }, config.jwtTokenSecret);
+  };
+
   User.beforeCreate((user, options) => {
+    user.token = generateToken(user.id);
+
     return bcrypt.hash(user.password, 10).then(hashedPassword => {
       user.password = hashedPassword;
     });
