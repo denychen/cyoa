@@ -2,8 +2,49 @@
 
 const Sequelize = require('sequelize');
 const Page = require('../models').Page;
+const PageRoute = require('../models').PageRoute;
+const Story = require('../models').Story;
 
 module.exports = {
+  createPage(storyId, content) {
+    let newPage = new Page({
+      storyId: storyId,
+      content: content
+    });
+
+    return newPage.save().then(page => {
+      let pageId = page.id;
+
+      Story.find({
+        where: { id: storyId }
+      }).then(story => {
+        if (story.firstPageId === null) {
+          story.firstPageId = pageId;
+          story.save();
+        }
+      });
+
+      return {
+        id: pageId
+      };
+    });
+  },
+
+  createPageRoute(pageId, options) {
+    let newPageRoutes = options.map((option, index) => {
+      return {
+        originId: pageId,
+        destinationId: option.optionId,
+        option: option.option,
+        order: index + 1
+      }
+    });
+
+    return PageRoute.bulkCreate(newPageRoutes).then(() => {
+      return {};
+    });
+  },
+
   findPageAndNextPagesById(id) {
     return Page.find({
       include: [{

@@ -2,6 +2,12 @@
 module.exports = {
   up: function(queryInterface, Sequelize) {
     return queryInterface.createTable('PageRoutes', {
+      id: {
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV4,
+        allowNull: false,
+        primaryKey: true
+      },
       originId: {
         type: Sequelize.UUID,
         references: {
@@ -9,7 +15,6 @@ module.exports = {
           key: 'id'
         },
         allowNull: false,
-        primaryKey: true,
         onUpdate: 'cascade',
         onDelete: 'cascade'
       },
@@ -20,7 +25,6 @@ module.exports = {
           key: 'id'
         },
         allowNull: false,
-        primaryKey: true,
         onUpdate: 'cascade',
         onDelete: 'cascade'
       },

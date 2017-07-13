@@ -7,7 +7,12 @@ var storiesController = require('../controllers/stories');
 
 /* POST stories. */
 router.post('/', function(req, res, next) {
-  storiesController.create(req.body.title, req.body.authors, req.body.description, req.body.genres).then(result => {
+  let title = req.body.title;
+  let authors = req.body.authors;
+  let description = req.body.description;
+  let genres = req.body.genres;
+  
+  storiesController.create(title, authors, description, genres).then(result => {
     res.json(result);
   });
 });
@@ -21,7 +26,9 @@ router.get('/', function(req, res, next) {
 
 /* GET story listing */
 router.get('/:storyId', function(req, res, next) {
-  storiesController.findById(req.params.storyId).then(result => {
+  let storyId = req.params.storyId;
+  
+  storiesController.findById(storyId).then(result => {
     res.json(result);
   });
 });

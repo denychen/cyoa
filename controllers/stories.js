@@ -22,14 +22,14 @@ module.exports = {
 
       newStoryUser.save();
 
-      let newGenreStory = genres.map(genre => {
+      let newGenreStories = genres.map(genre => {
         return {
           genreId: genre.id,
           storyId: story.id
         }
       });
 
-      GenreStory.bulkCreate(newGenreStory);
+      GenreStory.bulkCreate(newGenreStories);
 
       return {
         id: story.id

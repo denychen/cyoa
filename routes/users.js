@@ -5,7 +5,11 @@ var usersController = require('../controllers/users');
 
 /* POST users */
 router.post('/signup', function(req, res, next) {
-  usersController.signup(req.body.email, req.body.password, req.body.username).then(result => {
+  let email = req.body.email;
+  let password = req.body.password;
+  let username = req.body.username;
+
+  usersController.signup(email, password, username).then(result => {
     res.json(result);
   });
 });
@@ -23,6 +27,7 @@ router.delete('/signout', function(req, res, next) {
   let userId = req.body.userId;
 
   usersController.signout(userId);
+  
   res.status(200).json({});
 });
 
