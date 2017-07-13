@@ -62,6 +62,8 @@ module.exports = {
     return Story.find({
       include: [{
         model: Genre
+      }, {
+        model: User
       }],
       where: { id: id }
     }).then(story => {
@@ -69,9 +71,14 @@ module.exports = {
         return genre.genre;
       });
 
+      let authors = story.Users.map(user => {
+        return user.username;
+      });
+
       return {
         id: story.id,
         title: story.title,
+        authors: authors,
         description: story.description,
         firstPageId: story.firstPageId,
         genres: genres
