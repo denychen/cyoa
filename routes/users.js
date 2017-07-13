@@ -54,7 +54,9 @@ router.delete('/signout', function(req, res, next) {
   usersController.signout(userId).then((user) => {
     user.token = null;
     user.save();
-    
+
+    res.status(200).json({});
+  }).catch(() => {
     res.status(200).json({});
   });
 });
