@@ -56,6 +56,11 @@ module.exports = function(sequelize, DataTypes) {
           foreignKey: 'storyId',
           otherKey: 'genreId'
         });
+        Story.belongsToMany(models.User, { 
+          through: 'StoryUser',
+          foreignKey: 'storyId',
+          otherKey: 'userId'
+        });
       }
     }
   });
