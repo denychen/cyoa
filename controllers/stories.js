@@ -2,7 +2,9 @@
 
 const Story = require('../models').Story;
 const Genre = require('../models').Genre;
+const User = require('../models').User;
 const GenreStory = require('../models').GenreStory;
+const StoryUser = require('../models').StoryUser;
 
 module.exports = {
   create(title, description, genres) {
@@ -24,7 +26,11 @@ module.exports = {
   },
 
   findAll() {
-    return Story.findAll().then(stories => {
+    return Story.findAll({
+      include: [{
+        model: User
+      }],
+    }).then(stories => {
       return stories.map(story => {
         let shortenedDescription = story.description;
         let maxDescriptionLength = 140;
@@ -33,9 +39,14 @@ module.exports = {
           shortenedDescription = shortenedDescription.substring(0, maxDescriptionLength).concat('…');
         }
 
+        let authors = story.Users.map(user => {
+          return user.username;
+        });
+
         return {
           id: story.id,
           title: story.title,
+          authors: authors,
           description: shortenedDescription,
           createdAt: story.createdAt
         };
@@ -46,7 +57,7 @@ module.exports = {
   findById(id) {
     return Story.find({
       include: [{
-        model: Genre,
+        model: Genre
       }],
       where: { id: id }
     }).then(story => {
