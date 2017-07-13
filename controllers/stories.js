@@ -29,7 +29,11 @@ module.exports = {
         }
       });
 
-      return GenreStory.bulkCreate(newGenreStory);
+      GenreStory.bulkCreate(newGenreStory);
+
+      return {
+        id: story.id
+      };
     });
   },
 

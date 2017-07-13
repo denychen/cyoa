@@ -11,13 +11,36 @@ module.exports = {
       username: username
     });
 
-    return newUser.save();
+    return newUser.save().then(user => {
+      return {
+        id: user.id,
+        email: user.email,
+        username: user.username,
+        token: user.token
+      }
+    });
   },
 
   signin(email, password) {
     return User.findOne({
       where: {
         email: email
+      }
+    }).then(user => {
+      if (user) {
+        return user.validatePassword(password).then(valid => {
+          if (valid) {
+            user.token = user.generateToken();
+            user.save();
+
+            return {
+              id: user.id,
+              email: user.email,
+              username: user.username,
+              token: user.token
+            }
+          }
+        });
       }
     });
   },
@@ -27,6 +50,9 @@ module.exports = {
       where: {
         id: userId
       }
+    }).then(user => {
+      user.token = null;
+      user.save();
     });
   }
 };
