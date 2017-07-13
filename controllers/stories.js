@@ -1,5 +1,6 @@
 'use strict';
 
+const Sequelize = require('sequelize');
 const Story = require('../models').Story;
 const Genre = require('../models').Genre;
 const User = require('../models').User;
@@ -30,6 +31,9 @@ module.exports = {
       include: [{
         model: User
       }],
+      order: [
+        [Sequelize.literal('`users.StoryUser.createdAt`'), 'ASC']
+      ]
     }).then(stories => {
       return stories.map(story => {
         let shortenedDescription = story.description;
