@@ -8,7 +8,7 @@ var genresController = require('../controllers/genres');
 /* GET page listing. */
 router.get('/', function(req, res, next) {
   genresController.findAll().then(genres => {
-    res.json(genres);
+    res.json({ genres: genres });
   });
 });
 

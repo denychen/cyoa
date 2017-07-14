@@ -10,7 +10,7 @@ router.post('/signup', function(req, res, next) {
   let username = req.body.username;
 
   usersController.signup(email, password, username).then(result => {
-    res.json(result);
+    res.json({ user: result });
   });
 });
 
@@ -19,7 +19,7 @@ router.post('/signin', function(req, res, next) {
   let password = req.body.password;
 
   usersController.signin(email, password).then(result => {
-    res.json(result);
+    res.json({ user: result });
   });
 });
 
