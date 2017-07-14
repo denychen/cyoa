@@ -25,7 +25,9 @@ module.exports = {
       });
 
       return {
-        id: pageId
+        page: {
+          id: pageId
+        }
       };
     });
   },
@@ -68,9 +70,11 @@ module.exports = {
       });
 
       return {
-        id: page.id,
-        content: page.content,
-        destinations: destinations
+        page: {
+          id: page.id,
+          content: page.content,
+          destinations: destinations
+        }
       };
     });
   }

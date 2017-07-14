@@ -6,6 +6,7 @@ const Genre = require('../models').Genre;
 const User = require('../models').User;
 const GenreStory = require('../models').GenreStory;
 const StoryUser = require('../models').StoryUser;
+const Page = require('../models').Page;
 
 module.exports = {
   create(title, authors, description, genres) {
@@ -32,7 +33,9 @@ module.exports = {
       GenreStory.bulkCreate(newGenreStories);
 
       return {
-        id: story.id
+        story: {
+          id: story.id
+        }
       };
     });
   },
@@ -46,7 +49,7 @@ module.exports = {
         [Sequelize.literal('`users.StoryUser.createdAt`'), 'ASC']
       ]
     }).then(stories => {
-      return stories.map(story => {
+      let serializedStories = stories.map(story => {
         let shortenedDescription = story.description;
         let maxDescriptionLength = 140;
 
@@ -54,22 +57,22 @@ module.exports = {
           shortenedDescription = shortenedDescription.substring(0, maxDescriptionLength).concat('…');
         }
 
-        let authors = story.Users.map(user => {
-          return user.username;
-        });
-
         return {
           id: story.id,
           title: story.title,
-          authors: authors,
+          authors: story.Users.map(user => user.username),
           description: shortenedDescription,
           createdAt: story.createdAt
         };
       });
+
+      return {
+        stories: serializedStories
+      };
     });
   },
 
-  findById(id) {
+  findById(id, includePages) {
     return Story.find({
       include: [{
         model: Genre
@@ -78,21 +81,44 @@ module.exports = {
       }],
       where: { id: id }
     }).then(story => {
-      let genres = story.Genres.map(genre => {
-        return genre.genre;
-      });
+      let genres = story.Genres.map(genre => genre.genre);
+      let authors = story.Users.map(user => user.username);
 
-      let authors = story.Users.map(user => {
-        return user.username;
-      });
-
-      return {
+      let serializedStory = {
         id: story.id,
         title: story.title,
         authors: authors,
         description: story.description,
         firstPageId: story.firstPageId,
         genres: genres
+      };
+
+      if (includePages) {
+        return Page.findAll({
+          where: { storyId: story.id },
+          order: [
+            ['createdAt', 'ASC']
+          ]
+        }).then(pages => {
+          serializedStory.pages = pages.map(page => page.id);;
+
+          let serializedPages = pages.map(page => {
+            return {
+              id: page.id,
+              name: page.name,
+              content: page.content
+            };
+          });
+
+          return {
+            story: serializedStory,
+            pages: serializedPages
+          };
+        });
+      } else {
+        return {
+          story: serializedStory,
+        };
       }
     });
   }

@@ -13,14 +13,14 @@ router.post('/', function(req, res, next) {
   let genres = req.body.genres;
   
   storiesController.create(title, authors, description, genres).then(result => {
-    res.json({ story: result });
+    res.json(result);
   });
 });
 
 /* GET all story listings */
 router.get('/', function(req, res, next) {
   storiesController.findAll().then(result => {
-    res.json({ stories: result });
+    res.json(result);
   });
 });
 
@@ -29,7 +29,7 @@ router.get('/:storyId', function(req, res, next) {
   let storyId = req.params.storyId;
   
   storiesController.findById(storyId, true).then(result => {
-    res.json({ story: result});
+    res.json(result);
   });
 });
 

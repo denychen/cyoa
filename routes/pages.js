@@ -10,7 +10,7 @@ router.get('/:pageId', function(req, res, next) {
   let pageId = req.params.pageId;
 
   pagesController.findPageAndNextPagesById(pageId).then(result => {
-    res.json({ page: result });
+    res.json(result);
   });
 });
 
@@ -21,7 +21,7 @@ router.post('/', function(req, res, next) {
   let name = req.body.name;
 
   pagesController.createPage(storyId, content, name).then(result => {
-    res.json({ page: result });
+    res.json(result);
   });
 });
 

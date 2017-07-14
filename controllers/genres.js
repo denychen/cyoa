@@ -10,12 +10,16 @@ module.exports = {
           ['genre', 'ASC']
         ] 
       }).then(genres => {
-      return genres.map(genre => {
+      let serializedGenres = genres.map(genre => {
         return {
           id: genre.id,
           genre: genre.genre
         };
       });
+
+      return {
+        genres: serializedGenres
+      };
     });
   },
 };
