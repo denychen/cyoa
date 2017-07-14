@@ -27,6 +27,7 @@ module.exports = function(sequelize, DataTypes) {
       }
     },
     content: DataTypes.TEXT,
+    name: DataTypes.STRING,
     createdAt: {
       type: DataTypes.DATE,
       defaultValue: sequelize.literal('NOW()'),

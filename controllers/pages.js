@@ -9,7 +9,8 @@ module.exports = {
   createPage(storyId, content) {
     let newPage = new Page({
       storyId: storyId,
-      content: content
+      content: content,
+      name: name
     });
 
     return newPage.save().then(page => {
