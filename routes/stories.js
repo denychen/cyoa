@@ -7,10 +7,12 @@ var storiesController = require('../controllers/stories');
 
 /* POST stories. */
 router.post('/', function(req, res, next) {
-  let title = req.body.title;
-  let authors = req.body.authors;
-  let description = req.body.description;
-  let genres = req.body.genres;
+  let story = req.body.story;
+
+  let title = story.title;
+  let authors = story.authors;
+  let description = story.description;
+  let genres = story.genres;
   
   storiesController.create(title, authors, description, genres).then(result => {
     res.json(result);
