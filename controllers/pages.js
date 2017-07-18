@@ -53,7 +53,7 @@ module.exports = {
       include: [{
         model: Page,
         through: {
-          attributes: ['option', 'order']
+          attributes: ['id', 'option', 'order']
         },
         as: 'destinations'
       }],
@@ -64,7 +64,7 @@ module.exports = {
     }).then(page => {
       let serializedDestinations = page.destinations.map(page => {
         return {
-          id: page.id,
+          id: page.PageRoute.id,
           option: page.PageRoute.option,
           order: page.PageRoute.order
         };
@@ -74,7 +74,7 @@ module.exports = {
         page: {
           id: page.id,
           content: page.content,
-          destinations: destinations.map(destination => destination.id)
+          destinations: serializedDestinations.map(destination => destination.id)
         },
         destinations: serializedDestinations
       };
