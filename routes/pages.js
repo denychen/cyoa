@@ -16,9 +16,11 @@ router.get('/:pageId', function(req, res, next) {
 
 /* POST page */
 router.post('/', function(req, res, next) {
-  let storyId = req.body.storyId;
-  let content = req.body.content;
-  let name = req.body.name;
+  let page = req.body.page;
+
+  let storyId = page.storyId;
+  let content = page.content;
+  let name = page.name;
 
   pagesController.createPage(storyId, content, name).then(result => {
     res.json(result);

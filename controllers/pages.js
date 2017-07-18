@@ -62,7 +62,7 @@ module.exports = {
       ],
       where: { id: id }
     }).then(page => {
-      let destinations = page.destinations.map(page => {
+      let serializedDestinations = page.destinations.map(page => {
         return {
           id: page.id,
           option: page.PageRoute.option,
@@ -74,8 +74,9 @@ module.exports = {
         page: {
           id: page.id,
           content: page.content,
-          destinations: destinations
-        }
+          destinations: destinations.map(destination => destination.id)
+        },
+        destinations: serializedDestinations
       };
     });
   }
