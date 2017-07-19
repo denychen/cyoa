@@ -133,7 +133,7 @@ module.exports = {
 
             let serializedPage = {
                 id: page.id,
-                name: page.name,
+                name: page.name ? page.name : 'Untitled Page',
                 content: page.content
             }
 
