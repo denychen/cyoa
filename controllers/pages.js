@@ -33,6 +33,41 @@ module.exports = {
     });
   },
 
+  updatePage(pageId, name, content) {
+    return Page.update({
+      content: content,
+      name: name
+    }, {
+      where: {
+        id: pageId
+      }
+    }).then(page => {
+      return {
+        status: 204
+      };
+    });
+  },
+
+  upsertPageRoutes(pageId, destination) {
+    return PageRoute.find({
+      where: {
+        id: destination.id
+      }
+    }).then(pageRoute => {
+      return PageRoute.upsert({
+        id: destination.id,
+        originId: pageId,
+        destinationId: destination.pageId,
+        option: destination.option,
+        order: destination.order
+      }).then(pageRoute => {
+        return {
+          status: 204
+        };
+      });
+    });
+  },
+
   createPageRoute(pageId, options) {
     let newPageRoutes = options.map((option, index) => {
       return {
@@ -49,7 +84,7 @@ module.exports = {
   },
 
   findPageAndNextPagesById(id) {
-    return Page.find({
+    return Page.findAll({
       include: [{
         model: Page,
         through: {
@@ -60,20 +95,21 @@ module.exports = {
       order: [
         [Sequelize.literal('`destinations.PageRoute.order`'), 'ASC']
       ],
-      where: { id: id }
-    }).then(page => {
-      let serializedDestinations = page.destinations.map(page => {
+      where: { id: id },
+      raw: true
+    }).then(pages => {
+      let serializedDestinations = pages.map(page => {
         return {
-          id: page.PageRoute.id,
-          option: page.PageRoute.option,
-          order: page.PageRoute.order
+          id: page['destinations.PageRoute.id'],
+          option: page['destinations.PageRoute.option'],
+          order: page['destinations.PageRoute.order']
         };
       });
 
       return {
         page: {
-          id: page.id,
-          content: page.content,
+          id: pages[0].id,
+          content: pages[0].content,
           destinations: serializedDestinations.map(destination => destination.id)
         },
         destinations: serializedDestinations

@@ -108,28 +108,29 @@ module.exports = {
           where: { storyId: story.id },
           order: [
             ['createdAt', 'ASC']
-          ]
+          ],
+          raw: true
         }).then(pages => {
-          serializedStory.pages = pages.map(page => page.id);
+          serializedStory.pages = Array.from(new Set(pages.map(page => page.id)));
 
           let serializedDestinations = pages.reduce((result, page) => {
-            let destinations = page.destinations;
-            
-            if (destinations.length > 0) {
-              result = result.concat(destinations.map(destination => {
-                return {
-                  id: destination.PageRoute.id,
-                  pageId: destination.PageRoute.destinationId,
-                  option: destination.PageRoute.option,
-                  order: destination.PageRoute.order
-                };
-              }));
+            if (page['destinations.PageRoute.id']) {
+              return result.concat({
+                id: page['destinations.PageRoute.id'],
+                originId: page['destinations.PageRoute.originId'],
+                pageId: page['destinations.PageRoute.destinationId'],
+                option: page['destinations.PageRoute.option'],
+                order: page['destinations.PageRoute.order']
+              });
             }
+            
             return result;
           }, []);
 
           let serializedPages = pages.reduce((result, page) => {
-            let destinations = page.destinations;
+            if (result.some(previousPage => previousPage.id === page.id)) {
+              return result;
+            }
 
             let serializedPage = {
                 id: page.id,
@@ -137,8 +138,14 @@ module.exports = {
                 content: page.content
             }
 
-            if (destinations.length > 0) {
-              serializedPage.destinations = page.destinations.map(destination => destination.PageRoute.id);
+            if (serializedDestinations.length > 0) {
+              serializedPage.destinations = serializedDestinations.reduce((result, destination) => {
+                if (page['destinations.PageRoute.originId'] === destination.originId) {
+                  return result.concat(destination.id);
+                }
+
+                return result;
+              }, []);
             }
 
             result.push(serializedPage);

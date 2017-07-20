@@ -38,9 +38,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     option: {
       type: DataTypes.STRING,
-      validate: {
-        notNull: true
-      }
+      allowNull: false
     },
     order: {
       type: DataTypes.INTEGER,

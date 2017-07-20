@@ -27,6 +27,30 @@ router.post('/', function(req, res, next) {
   });
 });
 
+/* PUT page */
+router.put('/:pageId', function(req, res, next) {
+  let page = req.body.page;
+
+  let pageId = req.params.pageId;
+  let pageName = page.name;
+  let pageContent = page.content;
+  let destinations = page.destinations;
+
+  pagesController.updatePage(pageId, pageName, pageContent).then(result => {
+    let promises = destinations.map(destination => {
+      return pagesController.upsertPageRoutes(pageId, destination).then(result => {
+        return result.status;
+      });
+    })
+
+    Promise.all(promises).then(results => {
+      if (results.every(result => result === 204)) {
+        res.sendStatus(204);
+      }
+    });
+  });
+});
+
 /* POST page route */
 router.post('/:pageId', function(req, res, next) {
   let pageId = req.params.pageId;
