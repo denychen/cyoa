@@ -6,7 +6,7 @@ const PageRoute = require('../models').PageRoute;
 const Story = require('../models').Story;
 
 module.exports = {
-  createPage(storyId, content) {
+  createPage(storyId, content, name) {
     let newPage = new Page({
       storyId: storyId,
       content: content,

@@ -18,7 +18,7 @@ router.get('/:pageId', function(req, res, next) {
 router.post('/', function(req, res, next) {
   let page = req.body.page;
 
-  let storyId = page.storyId;
+  let storyId = page.story;
   let content = page.content;
   let name = page.name;
 
