@@ -64,4 +64,13 @@ router.post('/:pageId', function(req, res, next) {
   });
 });
 
+/* DELETE page route */
+router.delete('/:pageId', function(req, res, next) {
+  let pageId = req.params.pageId;
+
+  pagesController.removePage(pageId).then(result => {
+    res.json(result);
+  });
+});
+
 module.exports = router;

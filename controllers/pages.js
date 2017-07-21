@@ -78,7 +78,8 @@ module.exports = {
       }
     }).then(pageRoute => {
       return {
-        status: 204
+        status: 204,
+        id: pageId
       };
     })
   },
@@ -95,6 +96,18 @@ module.exports = {
 
     return PageRoute.bulkCreate(newPageRoutes).then(() => {
       return {};
+    });
+  },
+
+  removePage(pageId) {
+    return Page.destroy({
+      where: {
+        id: pageId
+      }
+    }).then(page => {
+      return {
+        id: pageId
+      };
     });
   },
 
