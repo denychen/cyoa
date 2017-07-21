@@ -98,13 +98,19 @@ module.exports = {
       where: { id: id },
       raw: true
     }).then(pages => {
-      let serializedDestinations = pages.map(page => {
-        return {
+      let serializedDestinations = pages.reduce((result, page) => {
+        let serializedPage = {
           id: page['destinations.PageRoute.id'],
           option: page['destinations.PageRoute.option'],
           order: page['destinations.PageRoute.order']
         };
-      });
+
+        if (serializedPage.id !== null) {
+          result = result.concat(serializedPage);
+        }
+
+        return result;
+      }, []);
 
       return {
         page: {
