@@ -37,11 +37,14 @@ router.put('/:pageId', function(req, res, next) {
   let destinations = page.destinations;
 
   pagesController.updatePage(pageId, pageName, pageContent).then(result => {
-    let promises = destinations.map(destination => {
+    let promises = [];
+
+    promises.concat(pagesController.removePageRoutes(pageId, destinations));
+    promises = promises.concat(destinations.map(destination => {
       return pagesController.upsertPageRoutes(pageId, destination).then(result => {
         return result.status;
       });
-    })
+    }));
 
     Promise.all(promises).then(results => {
       if (results.every(result => result === 204)) {

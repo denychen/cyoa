@@ -68,6 +68,21 @@ module.exports = {
     });
   },
 
+  removePageRoutes(pageId, destinations) {
+    return PageRoute.destroy({
+      where: {
+        originId: pageId,
+        id: {
+          $notIn: destinations.map(destination => destination.id)
+        }
+      }
+    }).then(pageRoute => {
+      return {
+        status: 204
+      };
+    })
+  },
+
   createPageRoute(pageId, options) {
     let newPageRoutes = options.map((option, index) => {
       return {
