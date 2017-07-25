@@ -40,6 +40,21 @@ module.exports = {
     });
   },
 
+  update(storyId, newTitle, newDescription) {
+    return Story.findById(storyId).then(story => {
+      story.title = newTitle;
+      story.description = newDescription;
+      
+      return story.save().then(story => {
+        return {
+          story: {
+            id: story.id
+          }
+        };
+      });
+    });
+  },
+
   findAll() {
     return Story.findAll({
       include: [{

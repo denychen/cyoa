@@ -5,7 +5,7 @@ var router = express.Router();
 
 var storiesController = require('../controllers/stories');
 
-/* POST stories. */
+/* POST stories */
 router.post('/', function(req, res, next) {
   let story = req.body.story;
 
@@ -18,6 +18,19 @@ router.post('/', function(req, res, next) {
     res.json(result);
   });
 });
+
+/* PUT stories */
+router.put('/:storyId', function(req, res, next) {
+  let story = req.body.story;
+
+  let storyId = req.params.storyId;
+  let title = story.title;
+  let description = story.description;
+
+  storiesController.update(storyId, title, description).then(result => {
+    res.json(result);
+  });
+}), 
 
 /* GET all story listings */
 router.get('/', function(req, res, next) {
