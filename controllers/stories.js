@@ -76,6 +76,7 @@ module.exports = {
           id: story.id,
           title: story.title,
           authors: story.Users.map(user => user.username),
+          published: story.published,
           description: shortenedDescription,
           createdAt: story.createdAt
         };
