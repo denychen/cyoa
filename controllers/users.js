@@ -54,5 +54,20 @@ module.exports = {
       user.token = null;
       user.save();
     });
+  },
+
+  findById(userId) {
+    return User.findOne({
+      where: {
+        id: userId
+      }
+    }).then(user => {
+      return {
+        id: user.id,
+        email: user.email,
+        username: user.username,
+        token: user.token
+      };
+    });
   }
 };

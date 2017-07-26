@@ -33,4 +33,12 @@ router.delete('/signout', function(req, res, next) {
   res.status(200).json({});
 });
 
+router.get('/:userId', function(req, res, next) {
+  let userId = req.params.userId;
+
+  usersController.findById(userId).then(result => {
+    return res.json({ user: result});
+  })
+});
+
 module.exports = router;
