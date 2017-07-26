@@ -26,6 +26,11 @@ module.exports = function(sequelize, DataTypes) {
         isUUID: 4
       }
     },
+    published: { 
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+      allowNull: false
+    },
     createdAt: {
       type: DataTypes.DATE,
       defaultValue: sequelize.literal('NOW()'),
