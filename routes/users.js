@@ -37,7 +37,7 @@ router.get('/:userId', function(req, res, next) {
   let userId = req.params.userId;
 
   usersController.findById(userId).then(result => {
-    return res.json({ user: result});
+    return res.json({ user: result });
   })
 });
 
