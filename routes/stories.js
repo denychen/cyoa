@@ -4,17 +4,18 @@ var express = require('express');
 var router = express.Router();
 
 var storiesController = require('../controllers/stories');
+var authentication = require('../middlewares/authentication');
 
 /* POST stories */
-router.post('/', function(req, res, next) {
+router.post('/', authentication.isAuthenticated, function(req, res, next) {
   let story = req.body.story;
 
   let title = story.title;
-  let authors = story.authors;
+  let author = req.user;
   let description = story.description;
   let genres = story.genres;
   
-  storiesController.create(title, authors, description, genres).then(result => {
+  storiesController.create(title, author, description, genres).then(result => {
     res.json(result);
   });
 });

@@ -9,7 +9,7 @@ const StoryUser = require('../models').StoryUser;
 const Page = require('../models').Page;
 
 module.exports = {
-  create(title, authors, description, genres) {
+  create(title, author, description, genres) {
     let newStory = new Story({
       title: title,
       description: description
@@ -18,7 +18,7 @@ module.exports = {
     return newStory.save().then(story => {
       let newStoryUser = new StoryUser({
         storyId: story.id,
-        userId: authors
+        userId: author.id
       });
 
       newStoryUser.save();
