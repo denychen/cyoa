@@ -72,10 +72,17 @@ module.exports = {
           shortenedDescription = shortenedDescription.substring(0, maxDescriptionLength).concat('…');
         }
 
+        let serializedAuthors = story.Users.map(user => {
+          return {
+            id: user.id,
+            username: user.username,
+          };
+        });
+
         return {
           id: story.id,
           title: story.title,
-          authors: story.Users.map(user => user.username),
+          authors: serializedAuthors,
           published: story.published,
           description: shortenedDescription,
           createdAt: story.createdAt
@@ -97,16 +104,20 @@ module.exports = {
       }],
       where: { id: id }
     }).then(story => {
-      let genres = story.Genres.map(genre => genre.genre);
-      let authors = story.Users.map(user => user.username);
+      let serializedAuthors = story.Users.map(user => {
+        return {
+          id: user.id,
+          username: user.username,
+        };
+      });
 
       let serializedStory = {
         id: story.id,
         title: story.title,
-        authors: authors,
+        authors: serializedAuthors,
         description: story.description,
         firstPageId: story.firstPageId,
-        genres: genres
+        genres: story.Genres.map(genre => genre.genre)
       };
 
       if (includePages) {
@@ -170,6 +181,7 @@ module.exports = {
 
           return {
             story: serializedStory,
+            authors: serializedAuthors,
             pages: serializedPages,
             destinations: serializedDestinations
           };
