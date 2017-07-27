@@ -40,8 +40,19 @@ module.exports = {
     });
   },
 
-  update(storyId, newTitle, newDescription) {
-    return Story.findById(storyId).then(story => {
+  update(storyId, newTitle, newDescription, user) {
+    return Story.find({
+      include: [{
+        model: User
+      }],
+      where: {
+        id: storyId
+      }
+    }).then(story => {
+      let isAuthor = story.Users.some(author => author.id === user.id);
+      if (!isAuthor) {
+        return Promise.reject(new Error('Unauthorized user'));
+      }
       story.title = newTitle;
       story.description = newDescription;
       
