@@ -40,7 +40,7 @@ module.exports = {
     });
   },
 
-  update(storyId, newTitle, newDescription) {
+  update(storyId, newTitle, newDescription, published, firstPageId) {
     return Story.findOne({
       where: {
         id: storyId
@@ -48,6 +48,8 @@ module.exports = {
     }).then(story => {
       story.title = newTitle;
       story.description = newDescription;
+      story.published = published;
+      story.firstPageId = firstPageId;
       
       return story.save().then(story => {
         return {
