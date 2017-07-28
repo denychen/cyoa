@@ -32,9 +32,7 @@ router.put('/:storyId', authentication.isAuthenticated, function(req, res, next)
   storiesController.update(storyId, title, description, user).then(result => {
     res.json(result);
   }).catch(error => {
-    res.status(401).json({
-      msg: error.message
-    });
+    return res.sendStatus(401);
   });
 }), 
 

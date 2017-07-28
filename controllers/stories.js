@@ -107,7 +107,7 @@ module.exports = {
   },
 
   findById(id, includePages) {
-    return Story.find({
+    return Story.findOne({
       include: [{
         model: Genre
       }, {

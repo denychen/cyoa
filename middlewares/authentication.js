@@ -9,17 +9,13 @@ module.exports = {
     let token = req.header('authorization').split(' ')[1];
     
     if (!token) {
-      return res.status(401).json({
-        error: 'Missing token'
-      });
+      return res.sendStatus(401);
     }
 
     let decodedToken = jwt.decode(token, config.jwtTokenSecret);
 
     if (moment().isAfter(decodedToken.exp)) {
-      return res.status(401).json({
-        error: 'Invalid token'
-      });
+      return res.sendStatus(401);
     }
 
     User.findOne({
@@ -28,9 +24,7 @@ module.exports = {
       }
     }).then(user => {
       if (!user) {
-        return res.status(401).json({
-          error: 'Invalid token'
-        });
+        return res.sendStatus(401);
       }
 
       req.user = user;

@@ -16,7 +16,7 @@ module.exports = {
     return newPage.save().then(page => {
       let pageId = page.id;
 
-      Story.find({
+      Story.findOne({
         where: { id: storyId }
       }).then(story => {
         if (story.firstPageId === null) {
@@ -49,7 +49,7 @@ module.exports = {
   },
 
   upsertPageRoutes(pageId, destination) {
-    return PageRoute.find({
+    return PageRoute.findOne({
       where: {
         id: destination.id
       }

@@ -30,7 +30,7 @@ router.delete('/signout', function(req, res, next) {
 
   usersController.signout(userId);
   
-  res.status(200).json({});
+  res.sendStatus(200);
 });
 
 router.get('/:userId', function(req, res, next) {
