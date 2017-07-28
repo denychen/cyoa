@@ -4,6 +4,7 @@ var express = require('express');
 var router = express.Router();
 
 var pagesController = require('../controllers/pages');
+var authentication = require('../middlewares/authentication');
 
 /* GET page listing. */
 router.get('/:pageId', function(req, res, next) {
@@ -15,7 +16,7 @@ router.get('/:pageId', function(req, res, next) {
 });
 
 /* POST page */
-router.post('/', function(req, res, next) {
+router.post('/', authentication.isAuthenticated, authentication.isAuthor, function(req, res, next) {
   let page = req.body.page;
 
   let storyId = page.story;
@@ -28,7 +29,7 @@ router.post('/', function(req, res, next) {
 });
 
 /* PUT page */
-router.put('/:pageId', function(req, res, next) {
+router.put('/:pageId', authentication.isAuthenticated, authentication.isAuthor, function(req, res, next) {
   let page = req.body.page;
 
   let pageId = req.params.pageId;
@@ -55,7 +56,7 @@ router.put('/:pageId', function(req, res, next) {
 });
 
 /* POST page route */
-router.post('/:pageId', function(req, res, next) {
+router.post('/:pageId', authentication.isAuthenticated, authentication.isAuthor, function(req, res, next) {
   let pageId = req.params.pageId;
   let options = req.body.options;
 
@@ -65,7 +66,7 @@ router.post('/:pageId', function(req, res, next) {
 });
 
 /* DELETE page route */
-router.delete('/:pageId', function(req, res, next) {
+router.delete('/:pageId', authentication.isAuthenticated, authentication.isAuthor, function(req, res, next) {
   let pageId = req.params.pageId;
 
   pagesController.removePage(pageId).then(result => {

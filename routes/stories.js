@@ -21,15 +21,14 @@ router.post('/', authentication.isAuthenticated, function(req, res, next) {
 });
 
 /* PUT stories */
-router.put('/:storyId', authentication.isAuthenticated, function(req, res, next) {
+router.put('/:storyId', authentication.isAuthenticated, authentication.isAuthor, function(req, res, next) {
   let story = req.body.story;
 
   let storyId = req.params.storyId;
   let title = story.title;
   let description = story.description;
-  let user = req.user;
 
-  storiesController.update(storyId, title, description, user).then(result => {
+  storiesController.update(storyId, title, description).then(result => {
     res.json(result);
   }).catch(error => {
     return res.sendStatus(401);

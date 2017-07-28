@@ -40,19 +40,12 @@ module.exports = {
     });
   },
 
-  update(storyId, newTitle, newDescription, user) {
-    return Story.find({
-      include: [{
-        model: User
-      }],
+  update(storyId, newTitle, newDescription) {
+    return Story.findOne({
       where: {
         id: storyId
       }
     }).then(story => {
-      let isAuthor = story.Users.some(author => author.id === user.id);
-      if (!isAuthor) {
-        return Promise.reject(new Error('Unauthorized user'));
-      }
       story.title = newTitle;
       story.description = newDescription;
       
