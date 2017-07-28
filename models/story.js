@@ -1,4 +1,7 @@
 'use strict';
+
+var models = require('../models');
+
 module.exports = function(sequelize, DataTypes) {
   var Story = sequelize.define('Story', {
     id: {
@@ -21,6 +24,10 @@ module.exports = function(sequelize, DataTypes) {
     description: DataTypes.TEXT,
     firstPageId: {
       type: DataTypes.UUID,
+      references: {
+        model: models.User,
+        key: 'id'
+      },
       validate: {
         notEmpty: true,
         isUUID: 4
