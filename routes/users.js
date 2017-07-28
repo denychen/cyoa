@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 var usersController = require('../controllers/users');
+var authentication = require('../middlewares/authentication');
 
 /* POST users */
 router.post('/', function(req, res, next) {
@@ -25,12 +26,14 @@ router.post('/signin', function(req, res, next) {
   });
 });
 
-router.delete('/signout', function(req, res, next) {
-  let userId = req.body.userId;
+router.post('/signout', authentication.isAuthenticated, function(req, res, next) {
+  let user = req.user;
 
-  usersController.signout(userId);
-  
-  res.sendStatus(200);
+  usersController.signout(user).then(() => {
+    res.sendStatus(200);
+  }).catch(() => {
+    res.sendStatus(401);
+  });
 });
 
 router.get('/:userId', function(req, res, next) {

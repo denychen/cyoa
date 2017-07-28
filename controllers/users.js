@@ -45,15 +45,9 @@ module.exports = {
     });
   },
 
-  signout(userId) {
-    return User.findOne({
-      where: {
-        id: userId
-      }
-    }).then(user => {
-      user.token = null;
-      user.save();
-    });
+  signout(user) {
+    user.token = null;
+    return user.save();
   },
 
   findById(userId) {
