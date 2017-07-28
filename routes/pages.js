@@ -11,7 +11,7 @@ router.get('/:pageId', function(req, res, next) {
   let pageId = req.params.pageId;
 
   pagesController.findPageAndNextPagesById(pageId).then(result => {
-    res.json(result);
+    return res.json(result);
   });
 });
 
@@ -24,7 +24,7 @@ router.post('/', authentication.isAuthenticated, authentication.isAuthor, functi
   let name = page.name;
 
   pagesController.createPage(storyId, content, name).then(result => {
-    res.json(result);
+    return res.json(result);
   });
 });
 
@@ -49,7 +49,7 @@ router.put('/:pageId', authentication.isAuthenticated, authentication.isAuthor, 
 
     Promise.all(promises).then(results => {
       if (results.every(result => result === 204)) {
-        res.sendStatus(204);
+        return res.sendStatus(204);
       }
     });
   });
@@ -61,7 +61,7 @@ router.post('/:pageId', authentication.isAuthenticated, authentication.isAuthor,
   let options = req.body.options;
 
   pagesController.createPageRoute(pageId, options).then(result => {
-    res.json(result);
+    return res.json(result);
   });
 });
 
@@ -70,7 +70,7 @@ router.delete('/:pageId', authentication.isAuthenticated, authentication.isAutho
   let pageId = req.params.pageId;
 
   pagesController.removePage(pageId).then(result => {
-    res.json(result);
+    return res.json(result);
   });
 });
 

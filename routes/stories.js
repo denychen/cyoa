@@ -16,7 +16,7 @@ router.post('/', authentication.isAuthenticated, function(req, res, next) {
   let genres = story.genres;
   
   storiesController.create(title, author, description, genres).then(result => {
-    res.json(result);
+    return res.json(result);
   });
 });
 
@@ -29,7 +29,7 @@ router.put('/:storyId', authentication.isAuthenticated, authentication.isAuthor,
   let description = story.description;
 
   storiesController.update(storyId, title, description).then(result => {
-    res.json(result);
+    return res.json(result);
   }).catch(error => {
     return res.sendStatus(401);
   });
@@ -38,7 +38,7 @@ router.put('/:storyId', authentication.isAuthenticated, authentication.isAuthor,
 /* GET all story listings */
 router.get('/', function(req, res, next) {
   storiesController.findAll().then(result => {
-    res.json(result);
+    return res.json(result);
   });
 });
 
@@ -47,7 +47,7 @@ router.get('/:storyId', function(req, res, next) {
   let storyId = req.params.storyId;
   
   storiesController.findById(storyId, true).then(result => {
-    res.json(result);
+    return res.json(result);
   });
 });
 

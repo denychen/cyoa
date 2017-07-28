@@ -13,7 +13,7 @@ router.post('/', function(req, res, next) {
   let username = user.username;
 
   usersController.signup(email, password, username).then(result => {
-    res.json({ user: result });
+    return res.json({ user: result });
   });
 });
 
@@ -22,7 +22,7 @@ router.post('/signin', function(req, res, next) {
   let password = req.body.password;
 
   usersController.signin(email, password).then(result => {
-    res.json({ user: result });
+    return res.json({ user: result });
   });
 });
 
@@ -30,9 +30,9 @@ router.post('/signout', authentication.isAuthenticated, function(req, res, next)
   let user = req.user;
 
   usersController.signout(user).then(() => {
-    res.sendStatus(200);
+    return res.sendStatus(200);
   }).catch(() => {
-    res.sendStatus(401);
+    return res.sendStatus(401);
   });
 });
 
