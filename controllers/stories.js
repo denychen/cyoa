@@ -59,14 +59,17 @@ module.exports = {
     });
   },
 
-  findAll() {
+  findAllPublished() {
     return Story.findAll({
       include: [{
         model: User
       }],
       order: [
         [Sequelize.literal('`users.StoryUser.createdAt`'), 'ASC']
-      ]
+      ],
+      where: {
+        published: true
+      }
     }).then(stories => {
       let serializedStories = stories.map(story => {
         let shortenedDescription = story.description;
