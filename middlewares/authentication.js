@@ -8,9 +8,14 @@ const Page = require('../models').Page;
 
 module.exports = {
   isAuthenticated(req, res, next) {
-    let token = req.header('authorization').split(' ')[1];
+    let header = req.header('authorization'); 
+    let token = null;
     
-    if (!token) {
+    if (header) {
+      token = header.split(' ')[1];
+    }
+
+    if (!header || !token) {
       return res.sendStatus(401);
     }
 
