@@ -41,7 +41,7 @@ router.put('/:storyId', authentication.isAuthenticated, authentication.isAuthor,
 router.get('/', function(req, res, next) {
   let hasUser = req.query.user;
 
-  let findStories = function() {
+  let findStories = () => {
     storiesController.findAll(hasUser).then(result => {
       return res.json(result);
     });
