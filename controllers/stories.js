@@ -108,6 +108,7 @@ module.exports = {
           authors: serializedAuthors,
           published: story.published,
           description: shortenedDescription,
+          firstPublishedAt: story.firstPublishedAt,
           createdAt: story.createdAt
         };
       });
@@ -140,7 +141,8 @@ module.exports = {
         authors: serializedAuthors,
         description: story.description,
         firstPageId: story.firstPageId,
-        genres: story.Genres.map(genre => genre.genre)
+        genres: story.Genres.map(genre => genre.genre),
+        firstPublishedAt: story.firstPublishedAt
       };
 
       if (includePages) {
