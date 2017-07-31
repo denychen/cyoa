@@ -28,9 +28,10 @@ router.put('/:storyId', authentication.isAuthenticated, authentication.isAuthor,
   let title = story.title;
   let description = story.description;
   let published = story.published;
+  let firstPublishedAt = story.firstPublishedAt;
   let firstPageId = story.firstPageId;
 
-  storiesController.update(storyId, title, description, published, firstPageId).then(result => {
+  storiesController.update(storyId, title, description, published, firstPublishedAt, firstPageId).then(result => {
     return res.json(result);
   }).catch(error => {
     return res.sendStatus(401);
