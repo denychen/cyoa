@@ -1,7 +1,6 @@
 'use strict';
 
 const User = require('../models').User;
-const Passport = require('passport');
 
 module.exports = {
   signup(email, password, username) {
