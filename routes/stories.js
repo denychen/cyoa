@@ -59,8 +59,9 @@ router.get('/', function(req, res, next) {
 /* GET story listing */
 router.get('/:storyId', function(req, res, next) {
   let storyId = req.params.storyId;
+  let includePages = req.query.include === 'pages';
   
-  storiesController.findById(storyId, true).then(result => {
+  storiesController.findById(storyId, includePages).then(result => {
     return res.json(result);
   });
 });
