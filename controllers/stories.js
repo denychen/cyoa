@@ -92,7 +92,7 @@ module.exports = {
         let shortenedDescription = story.description;
         let maxDescriptionLength = 140;
 
-        if (shortenedDescription.length > maxDescriptionLength) {
+        if (shortenedDescription && shortenedDescription.length > maxDescriptionLength) {
           shortenedDescription = shortenedDescription.substring(0, maxDescriptionLength).concat('…');
         }
 
