@@ -130,6 +130,7 @@ module.exports = {
         let serializedPage = {
           id: page['destinations.PageRoute.id'],
           option: page['destinations.PageRoute.option'],
+          pageId: page['destinations.PageRoute.destinationId'],
           order: page['destinations.PageRoute.order']
         };
 
