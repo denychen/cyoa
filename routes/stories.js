@@ -61,9 +61,21 @@ router.get('/:storyId', function(req, res, next) {
   let storyId = req.params.storyId;
   let includePages = req.query.include === 'pages';
   
-  storiesController.findById(storyId, includePages).then(result => {
-    return res.json(result);
-  });
+  let findStory = () => {
+    storiesController.findById(storyId, includePages).then(result => {
+      return res.json(result);
+    });
+  }
+
+  let isAuthor = () => {
+    authentication.isAuthor(req, res, findStory);
+  }
+
+  if (includePages) {
+    authentication.isAuthenticated(req, res, isAuthor);
+  } else {
+    findStory();
+  }
 });
 
 module.exports = router;
