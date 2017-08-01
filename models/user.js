@@ -85,6 +85,14 @@ module.exports = function(sequelize, DataTypes) {
     });
   });
 
+  User.beforeUpdate((user, options) => {
+    if (options.fields.includes('password')) {
+      return bcrypt.hash(user.password, 10).then(hashedPassword => {
+        user.password = hashedPassword;
+      });
+    }
+  });
+
   User.prototype.validatePassword = function(password) {
     return bcrypt.compare(password, this.password);
   };

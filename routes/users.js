@@ -44,4 +44,16 @@ router.get('/:userId', function(req, res, next) {
   })
 });
 
+router.put('/', authentication.isAuthenticated, function(req, res, next) {
+  let user = req.user;
+  let email = req.body.email;
+  let username = req.body.username;
+  let password = req.body.password;
+  let oldPassword = req.body.oldPassword;
+
+  usersController.update(user.id, email, username, password, oldPassword).then(result => {
+    return res.json({ user: result });
+  });
+});
+
 module.exports = router;
