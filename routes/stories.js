@@ -78,4 +78,13 @@ router.get('/:storyId', function(req, res, next) {
   }
 });
 
+/* DELETE story listing */
+router.delete('/:storyId', authentication.isAuthenticated, authentication.isAuthor, function(req, res, next) {
+  let storyId = req.params.storyId;
+
+  storiesController.delete(storyId).then(result => {
+    return res.sendStatus(204);
+  });
+});
+
 module.exports = router;

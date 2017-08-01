@@ -62,6 +62,14 @@ module.exports = {
     });
   },
 
+  delete(storyId) {
+    return Story.destroy({
+      where: {
+        id: storyId
+      }
+    });
+  },
+
   findAll(showUnpublished) {
     let publishedCondition = null;
     if (showUnpublished) {
