@@ -15,7 +15,7 @@ router.post('/', function(req, res, next) {
   usersController.signup(email, password, username).then(result => {
     return res.json({ user: result });
   }).catch(error => {
-    return res.status(error.status).send({ message: error.message });
+    return res.status(error.status).json({ message: error.message });
   });
 });
 
@@ -26,7 +26,7 @@ router.post('/signin', function(req, res, next) {
   usersController.signin(email, password).then(result => {
     return res.json({ user: result });
   }).catch(error => {
-    return res.status(error.status).send({ message: error.message });
+    return res.status(error.status).json({ message: error.message });
   });
 });
 
@@ -34,9 +34,9 @@ router.post('/signout', authentication.isAuthenticated, function(req, res, next)
   let user = req.user;
 
   usersController.signout(user).then(() => {
-    return res.sendStatus(200);
+    return res.sendStatus(204);
   }).catch(() => {
-    return res.sendStatus(401);
+    return res.sendStatus(400);
   });
 });
 

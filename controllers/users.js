@@ -2,7 +2,7 @@
 
 const User = require('../models').User;
 var UserCreationError = require('../errors/userCreationError');
-var AppError = require('./appError');
+var AuthError = require('../errors/authError');
 
 module.exports = {
   signup(email, password, username) {
@@ -43,7 +43,7 @@ module.exports = {
               token: user.token
             }
           } else {
-            return Promise.reject(new AppError('Invalid password', 401));
+            return Promise.reject(new AuthError('Invalid password', 401));
           }
         });
       }
