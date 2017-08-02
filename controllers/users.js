@@ -1,7 +1,7 @@
 'use strict';
 
 const User = require('../models').User;
-var UserCreationError = require('../errors/userCreationError');
+var NotFoundError = require('../errors/notFoundError');
 var AuthError = require('../errors/authError');
 var AppError = require('../errors/appError');
 
@@ -21,7 +21,7 @@ module.exports = {
         token: user.token
       }
     }).catch(error => {
-      return Promise.reject(new UserCreationError(error.errors[0].message));
+      return Promise.reject(new AuthError(error.errors[0].message, 400));
     });
   },
 
