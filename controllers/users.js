@@ -43,9 +43,13 @@ module.exports = {
               token: user.token
             }
           } else {
-            return Promise.reject(new AuthError('Invalid password', 401));
+            return Promise.reject(new AuthError('username and password must be valid', 401));
           }
+        }).catch(error => {
+          return Promise.reject(new AuthError('username and password must be valid', 401));
         });
+      } else {
+        return Promise.reject(new AuthError('username and password must be valid', 401)); 
       }
     });
   },
