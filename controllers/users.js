@@ -105,18 +105,42 @@ module.exports = {
             if (password) {
               user.password = password;
             }
-            user.token = user.generateToken();
 
-            return user.save().then(user => {
+            if (email || username || password) {
+              user.token = user.generateToken();
+
+              return user.save().then(user => {
+                return {
+                  id: user.id,
+                  email: user.email,
+                  username: user.username,
+                  token: user.token
+                };
+              }).catch(error => {
+                return Promise.reject(new AppError());
+              });
+            } else {
               return {
                 id: user.id,
                 email: user.email,
                 username: user.username,
                 token: user.token
               };
-            });
+            }
+          } else {
+            return Promise.reject(new AuthError('Password must be valid', 403)); 
           }
+        }).catch(error => {
+          return Promise.reject(new AuthError('Password must be valid', 403));
         });
+      } else {
+        return Promise.reject(new NotFoundError('Unable to find user'));
+      }
+    }).catch(error => {
+      if (error.name === 'AuthError') {
+        return Promise.reject(error);
+      } else {
+        return Promise.reject(new AppError());
       }
     });
   }

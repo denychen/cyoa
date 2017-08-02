@@ -58,7 +58,12 @@ router.put('/', authentication.isAuthenticated, function(req, res, next) {
   let oldPassword = req.body.oldPassword;
 
   usersController.update(user.id, email, username, password, oldPassword).then(result => {
+    if (result.status) {
+      res.status(result.status);
+    }
     return res.json({ user: result });
+  }).catch(error => {
+    return res.status(error.status).json({ message: error.message });
   });
 });
 
