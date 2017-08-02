@@ -33,10 +33,10 @@ router.post('/signin', function(req, res, next) {
 router.post('/signout', authentication.isAuthenticated, function(req, res, next) {
   let user = req.user;
 
-  usersController.signout(user).then(() => {
-    return res.sendStatus(204);
-  }).catch(() => {
-    return res.sendStatus(400);
+  usersController.signout(user).then(result => {
+    return res.sendStatus(result.status);
+  }).catch(error => {
+    return res.sendStatus(error.status);
   });
 });
 

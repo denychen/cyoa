@@ -3,6 +3,7 @@
 const User = require('../models').User;
 var UserCreationError = require('../errors/userCreationError');
 var AuthError = require('../errors/authError');
+var AppError = require('../errors/appError');
 
 module.exports = {
   signup(email, password, username) {
@@ -56,7 +57,11 @@ module.exports = {
 
   signout(user) {
     user.token = null;
-    return user.save();
+    return user.save().then(() => {
+      return Promise.resolve({ status: 204 });
+    }).catch(error => {
+      return Promise.reject(new AppError());
+    });
   },
 
   findById(userId) {
