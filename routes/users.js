@@ -45,7 +45,9 @@ router.get('/:userId', function(req, res, next) {
 
   usersController.findById(userId).then(result => {
     return res.json({ user: result });
-  })
+  }).then(error => {
+    return res.status(error.status).json({ message: error.message });
+  });
 });
 
 router.put('/', authentication.isAuthenticated, function(req, res, next) {

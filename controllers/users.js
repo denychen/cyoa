@@ -70,12 +70,18 @@ module.exports = {
         id: userId
       }
     }).then(user => {
-      return {
-        id: user.id,
-        email: user.email,
-        username: user.username,
-        token: user.token
-      };
+      if (user) {
+        return {
+          id: user.id,
+          email: user.email,
+          username: user.username,
+          token: user.token
+        };
+      } else {
+        return Promise.reject(new NotFoundError('Unable to find user'));
+      }
+    }).catch(error => {
+      return Promise.reject(new AppError());
     });
   },
 
