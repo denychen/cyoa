@@ -45,7 +45,7 @@ router.get('/:userId', function(req, res, next) {
 
   usersController.findById(userId).then(result => {
     return res.json({ user: result });
-  }).then(error => {
+  }).catch(error => {
     return res.status(error.status).json({ message: error.message });
   });
 });
