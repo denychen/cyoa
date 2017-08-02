@@ -1,6 +1,8 @@
 'use strict';
 
 const User = require('../models').User;
+var UserCreationError = require('../errors/userCreationError');
+var AppError = require('./appError');
 
 module.exports = {
   signup(email, password, username) {
@@ -17,6 +19,8 @@ module.exports = {
         username: user.username,
         token: user.token
       }
+    }).catch(error => {
+      return Promise.reject(new UserCreationError(error.errors[0].message));
     });
   },
 
@@ -38,6 +42,8 @@ module.exports = {
               username: user.username,
               token: user.token
             }
+          } else {
+            return Promise.reject(new AppError('Invalid password', 401));
           }
         });
       }

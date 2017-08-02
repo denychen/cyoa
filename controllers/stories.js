@@ -21,8 +21,6 @@ module.exports = {
         userId: author.id
       });
 
-      newStoryUser.save();
-
       let newGenreStories = genres.map(genre => {
         return {
           genreId: genre.id,
@@ -30,6 +28,7 @@ module.exports = {
         }
       });
 
+      newStoryUser.save();
       GenreStory.bulkCreate(newGenreStories);
 
       return {

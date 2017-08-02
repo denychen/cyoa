@@ -16,28 +16,36 @@ module.exports = function(sequelize, DataTypes) {
         isUUID: 4
       }
     },
-    username: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true,
-      validate: {
-        notEmpty: true
-      }
-    },
     email: {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
       validate: {
-        notEmpty: true,
-        isEmail: true
+        notEmpty: {
+          msg: 'email must be present'
+        },
+        isEmail: {
+          msg: 'email must be valid'
+        }
+      }
+    },
+    username: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+      validate: {
+        notEmpty: {
+          msg: 'username must be present'
+        }
       }
     },
     password: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        notEmpty: true,
+        notEmpty: {
+          msg: 'password must be present'
+        }
       }
     },
     token: {
@@ -67,7 +75,7 @@ module.exports = function(sequelize, DataTypes) {
         notEmpty: true
       }
     }
-  }, {
+  }, { 
     classMethods: {
       associate: function(models) {
         User.belongsToMany(models.Story, { 
