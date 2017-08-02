@@ -13,7 +13,7 @@ router.post('/', function(req, res, next) {
   let username = user.username;
 
   usersController.signup(email, password, username).then(result => {
-    return res.json({ user: result });
+    return res.status(201).json({ user: result });
   }).catch(error => {
     return res.status(error.status).json({ message: error.message });
   });
