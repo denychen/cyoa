@@ -5,6 +5,9 @@ let moment = require('moment');
 const User = require('../models').User;
 const StoryUser = require('../models').StoryUser;
 const Page = require('../models').Page;
+var NotFoundError = require('../errors/notFoundError');
+var AuthError = require('../errors/authError');
+var AppError = require('../errors/appError');
 
 module.exports = {
   isAuthenticated(req, res, next) {
@@ -16,13 +19,13 @@ module.exports = {
     }
 
     if (!header || !token) {
-      return res.sendStatus(401);
+      return next(new AuthError('Missing token'), 401);
     }
 
     let decodedToken = jwt.decode(token, config.jwtTokenSecret);
 
     if (moment().isAfter(decodedToken.exp)) {
-      return res.sendStatus(401);
+      return next(new AuthError('Token expired'), 401);
     }
 
     User.findOne({
@@ -31,12 +34,15 @@ module.exports = {
       }
     }).then(user => {
       if (!user) {
-        return res.sendStatus(401);
+        return next(new NotFoundError('Unable to find user'));
       }
 
       req.user = user;
 
       return next();
+    }).catch(error => {
+      console.log(error);
+      return next(new AppError());
     });
   },
 
@@ -53,11 +59,14 @@ module.exports = {
         }
       }).then(page => {
         if (!page) {
-          return res.sendStatus(400);
+          return next(new NotFoundError('Unable to find page'));
         }
 
         return page.storyId;
-      })
+      }).catch(error => {
+        console.log(error);
+        return next(new AppError());
+      });
     } else {
       storyIdPromise = Promise.resolve(storyId);
     }
@@ -71,11 +80,17 @@ module.exports = {
         let isAuthor = storyUsers.some(storyUser => storyUser.userId === userId);
         
         if (!isAuthor) {
-          return res.sendStatus(401);
+          return next(new AuthError('User not authorized'), 403);
         }
 
         next();
+      }).catch(error => {
+        console.log(error);
+        return next(new AppError());
       });
+    }).catch(error => {
+      console.log(error);
+      return next(new AppError());
     });
   }
 };
