@@ -21,7 +21,7 @@ module.exports = {
         token: user.token
       }
     }).catch(error => {
-      return Promise.reject(new AuthError(error.errors[0].message, 400));
+      return Promise.reject(new AuthError(error.errors[0].message, 422));
     });
   },
 
