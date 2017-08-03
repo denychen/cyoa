@@ -39,21 +39,12 @@ router.put('/:storyId', authentication.isAuthenticated, authentication.isAuthor,
 }), 
 
 /* GET all story listings */
-router.get('/', function(req, res, next) {
+router.get('/', authentication.conditionalIsAuthenticated, function(req, res, next) {
   let hasUser = req.query.user;
 
-  let findStories = () => {
-    storiesController.findAll(hasUser).then(result => {
-      return res.json(result);
-    });
-  }
-
-  if (hasUser) {
-    authentication.isAuthenticated(req, res, findStories);
-  } else {
-    findStories();
-  }
-
+  storiesController.findAll(hasUser).then(result => {
+    return res.json(result);
+  });
 });
 
 /* GET story listing */

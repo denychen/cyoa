@@ -92,5 +92,15 @@ module.exports = {
       console.log(error);
       return next(new AppError());
     });
-  }
+  },
+
+  conditionalIsAuthenticated(req, res, next) {
+    let hasUser = req.query.user;
+
+    if (hasUser) {
+      return module.exports.isAuthenticated(req, res, next);
+    } else {
+      return next();
+    }
+  },
 };
