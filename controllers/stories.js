@@ -72,6 +72,8 @@ module.exports = {
   findAll(hasUser, user) {
     return Story.findAll({
       include: [{
+        model: Genre
+      }, {
         model: User,
         where: hasUser ? { id: user.id } : null
       }],
@@ -99,6 +101,7 @@ module.exports = {
           id: story.id,
           title: story.title,
           authors: serializedAuthors,
+          genres: story.Genres.map(genre => genre.genre),
           published: story.published,
           description: shortenedDescription,
           firstPublishedAt: story.firstPublishedAt,
