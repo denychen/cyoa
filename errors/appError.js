@@ -1,6 +1,14 @@
 module.exports = class AppError extends Error {
   constructor(message, status) {
-    super(message);
+    let errorMessage = {
+      errors: [
+        {
+          detail: message
+        }
+      ]
+    };
+
+    super(JSON.stringify(errorMessage));
 
     this.name = this.constructor.name;
 

@@ -15,7 +15,7 @@ router.post('/', function(req, res, next) {
   usersController.signup(email, password, username).then(result => {
     return res.status(201).json({ user: result });
   }).catch(error => {
-    return res.status(error.status).json({ message: error.message });
+    return res.status(error.status).json(JSON.parse(error.message));
   });
 });
 
@@ -26,7 +26,7 @@ router.post('/signin', function(req, res, next) {
   usersController.signin(email, password).then(result => {
     return res.json({ user: result });
   }).catch(error => {
-    return res.status(error.status).json({ message: error.message });
+    return res.status(error.status).json(JSON.parse(error.message));
   });
 });
 
@@ -46,7 +46,7 @@ router.get('/:userId', function(req, res, next) {
   usersController.findById(userId).then(result => {
     return res.json({ user: result });
   }).catch(error => {
-    return res.status(error.status).json({ message: error.message });
+    return res.status(error.status).json(JSON.parse(error.message));
   });
 });
 
@@ -63,7 +63,7 @@ router.put('/', authentication.isAuthenticated, function(req, res, next) {
     }
     return res.json({ user: result });
   }).catch(error => {
-    return res.status(error.status).json({ message: error.message });
+    return res.status(error.status).json(JSON.parse(error.message));
   });
 });
 

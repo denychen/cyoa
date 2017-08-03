@@ -67,7 +67,7 @@ app.use(function(err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   if (err.message) {
-    res.json({ message: err.message} );
+    res.json(JSON.parse(err.message));
   } else {
     return res.send();
   }
