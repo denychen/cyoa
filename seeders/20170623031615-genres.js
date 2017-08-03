@@ -3,8 +3,13 @@
 module.exports = {
   up: function (queryInterface, Sequelize) {
     return queryInterface.bulkInsert('Genres', [
-      { id: '1', genre: 'Mystery' },
-      { id: '2', genre: 'Science Fiction' }
+      { genre: 'Action and Adventure' },
+      { genre: 'Education' },
+      { genre: 'Fantasy' },
+      { genre: 'Horror' },
+      { genre: 'Mystery' },
+      { genre: 'Romance' },
+      { genre: 'Science Fiction' }
     ], {});
   },
 
