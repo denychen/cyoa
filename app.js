@@ -67,7 +67,11 @@ app.use(function(err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   if (err.message) {
-    res.json(JSON.parse(err.message));
+    try {
+      return res.json(JSON.parse(err.message));
+    } catch(e) {
+      return res.send(err.message);
+    }
   } else {
     return res.send();
   }
