@@ -69,31 +69,16 @@ module.exports = {
     });
   },
 
-  findAll(showUnpublished) {
-    let publishedCondition = null;
-    if (showUnpublished) {
-      publishedCondition = {        
-        $or: [{
-            published: true,
-          }, {
-            published: false
-          }
-        ]
-      }
-    } else {
-      publishedCondition = {
-        published: true
-      }
-    }
-
+  findAll(hasUser, user) {
     return Story.findAll({
       include: [{
-        model: User
+        model: User,
+        where: hasUser ? { id: user.id } : null
       }],
       order: [
         [Sequelize.literal('`users.StoryUser.createdAt`'), 'ASC']
       ],
-      where: publishedCondition
+      where: hasUser ? null : { published: true }
     }).then(stories => {
       let serializedStories = stories.map(story => {
         let shortenedDescription = story.description;
