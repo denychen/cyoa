@@ -27,9 +27,7 @@ module.exports = {
 
   signin(email, password) {
     return User.findOne({
-      where: {
-        email: email
-      }
+      where: { email: email }
     }).then(user => {
       if (user) {
         return user.validatePassword(password).then(valid => {
@@ -66,9 +64,7 @@ module.exports = {
 
   findById(userId) {
     return User.findOne({
-      where: {
-        id: userId
-      }
+      where: { id: userId }
     }).then(user => {
       if (user) {
         return {
@@ -87,9 +83,7 @@ module.exports = {
 
   update(userId, email, username, password, oldPassword) {
     return User.findOne({
-      where: {
-        id: userId
-      }
+      where: { id: userId }
     }).then(user => {
       if (user) {
         return user.validatePassword(oldPassword).then(valid => {

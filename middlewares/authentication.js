@@ -29,9 +29,7 @@ module.exports = {
     }
 
     User.findOne({
-      where: {
-        token: token
-      }
+      where: { token: token }
     }).then(user => {
       if (!user) {
         return next(new NotFoundError('Unable to find user'));
@@ -54,9 +52,7 @@ module.exports = {
 
     if (!storyId) {
       storyIdPromise = Page.findOne({
-        where: {
-          id: pageId
-        }
+        where: { id: pageId }
       }).then(page => {
         if (!page) {
           return next(new NotFoundError('Unable to find page'));
@@ -73,9 +69,7 @@ module.exports = {
 
     storyIdPromise.then(storyId => {
       StoryUser.findAll({
-        where: {
-          storyId: storyId
-        }
+        where: { storyId: storyId }
       }).then(storyUsers => {
         let isAuthor = storyUsers.some(storyUser => storyUser.userId === userId);
         

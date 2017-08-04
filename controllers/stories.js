@@ -39,33 +39,61 @@ module.exports = {
     });
   },
 
-  update(storyId, newTitle, newDescription, published, firstPublishedAt, firstPageId) {
+  update(storyId, newTitle, newDescription, newGenres, published, firstPublishedAt, firstPageId) {
     return Story.findOne({
-      where: {
-        id: storyId
-      }
+      include: [{
+        model: Genre
+      }],
+      where: { id: storyId }
     }).then(story => {
       story.title = newTitle;
       story.description = newDescription;
       story.published = published;
       story.firstPublishedAt = firstPublishedAt;
       story.firstPageId = firstPageId;
+
+      let newGenreIds = newGenres.map(genre => parseInt(genre.id));
+      let oldGenreIds = story.Genres.map(genre => genre.id);
+
+      let genreIdsToDelete = oldGenreIds.filter(genreId => !newGenreIds.includes(genreId));
+      let genreIdsToInsert = newGenreIds.filter(genreId => !oldGenreIds.includes(genreId));
       
-      return story.save().then(story => {
-        return {
-          story: {
-            id: story.id
-          }
-        };
+      let storySavePromise = story.save().then(story => {
+        return true;
+      }).catch((error) => {
+        return false;
       });
+
+      let genreDestroyPromise = GenreStory.destroy({
+        where: {
+          storyId: storyId,
+          genreId: { $in: genreIdsToDelete }
+        }
+      }).then(destroyed => {
+        return destroyed === genreIdsToDelete.length;
+      }).catch((error) => {
+        return false;
+      });
+
+      let newGenreStories = genreIdsToInsert.map(genreId => {
+        return {
+          genreId: genreId,
+          storyId: storyId
+        }
+      });
+      let genreInsertPromise = GenreStory.bulkCreate(newGenreStories).then(genreStories => {
+        return genreStories.length === genreIdsToInsert.length;
+      }).catch((error) => {
+        return false;
+      });
+
+      return [storySavePromise, genreInsertPromise, genreInsertPromise];
     });
   },
 
   delete(storyId) {
     return Story.destroy({
-      where: {
-        id: storyId
-      }
+      where: { id: storyId }
     });
   },
 

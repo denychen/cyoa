@@ -27,14 +27,23 @@ router.put('/:storyId', authentication.isAuthenticated, authentication.isAuthor,
   let storyId = req.params.storyId;
   let title = story.title;
   let description = story.description;
+  let genres = story.genres;
   let published = story.published;
   let firstPublishedAt = story.firstPublishedAt;
   let firstPageId = story.firstPageId;
 
-  storiesController.update(storyId, title, description, published, firstPublishedAt, firstPageId).then(result => {
-    return res.json(result);
+  storiesController.update(storyId, title, description, genres, published, firstPublishedAt, firstPageId).then(promises => {
+    Promise.all(promises).then(results => {
+      if (results.every(result => result === true)) {
+        return res.sendStatus(204);
+      } else {
+        return res.sendStatus(400);
+      }
+    }).catch(error => {
+    return res.sendStatus(500);
+  });
   }).catch(error => {
-    return res.sendStatus(401);
+    return res.sendStatus(500);
   });
 }), 
 

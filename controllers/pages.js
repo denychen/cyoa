@@ -38,9 +38,7 @@ module.exports = {
       content: content,
       name: name
     }, {
-      where: {
-        id: pageId
-      }
+      where: { id: pageId }
     }).then(page => {
       return {
         status: 204
@@ -50,9 +48,7 @@ module.exports = {
 
   upsertPageRoutes(pageId, destination) {
     return PageRoute.findOne({
-      where: {
-        id: destination.id
-      }
+      where: { id: destination.id }
     }).then(pageRoute => {
       return PageRoute.upsert({
         id: destination.id,
@@ -101,9 +97,7 @@ module.exports = {
 
   removePage(pageId) {
     return Page.destroy({
-      where: {
-        id: pageId
-      }
+      where: { id: pageId }
     }).then(page => {
       return {
         id: pageId
