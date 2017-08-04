@@ -16,7 +16,7 @@ module.exports = {
           key: 'id'
         },
         onUpdate: 'cascade',
-        onDelete: 'no action'
+        onDelete: 'cascade'
       },
       content: {
         type: Sequelize.TEXT
