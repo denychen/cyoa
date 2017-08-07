@@ -39,28 +39,42 @@ module.exports = {
       name: name
     }, {
       where: { id: pageId }
-    }).then(page => {
+    }).then(result => {
       return {
-        status: 204
+        status: 0,
+        updated: result[0]
       };
+    }).catch(error => {
+      return false;
     });
   },
 
-  upsertPageRoutes(pageId, destination) {
-    return PageRoute.findOne({
-      where: { id: destination.id }
-    }).then(pageRoute => {
-      return PageRoute.upsert({
+  upsertPageRoutes(pageId, destinations) {
+    let updatedDestinations = destinations.map(destination => {
+      return {
         id: destination.id,
         originId: pageId,
         destinationId: destination.pageId,
         option: destination.option,
         order: destination.order
-      }).then(pageRoute => {
+      };
+    });
+
+    return PageRoute.bulkCreate(updatedDestinations, {
+      updateOnDuplicate: ['id', 'originId', 'destinationId', 'option', 'order']
+    }).then(result => {
+      let serializedDestinations = result.map(pageRoute => {
         return {
-          status: 204
+          id: pageRoute.destinationId
         };
       });
+      
+      return {
+        status: 0,
+        result: result
+      };
+    }).catch(error => {
+      return false;
     });
   },
 
@@ -72,11 +86,13 @@ module.exports = {
           $notIn: destinations.map(destination => destination.id)
         }
       }
-    }).then(pageRoute => {
+    }).then(result => {
       return {
-        status: 204,
-        id: pageId
+        status: 0,
+        deleted: result
       };
+    }).catch(error => {
+      return false;
     })
   },
 

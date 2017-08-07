@@ -40,8 +40,8 @@ router.put('/:storyId', authentication.isAuthenticated, authentication.isAuthor,
         return res.sendStatus(400);
       }
     }).catch(error => {
-    return res.sendStatus(500);
-  });
+      return res.sendStatus(500);
+    });
   }).catch(error => {
     return res.sendStatus(500);
   });

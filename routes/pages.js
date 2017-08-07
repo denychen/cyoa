@@ -37,21 +37,25 @@ router.put('/:pageId', authentication.isAuthenticated, authentication.isAuthor, 
   let pageContent = page.content;
   let destinations = page.destinations;
 
-  pagesController.updatePage(pageId, pageName, pageContent).then(result => {
-    let promises = [];
+  let updatePagePromise = pagesController.updatePage(pageId, pageName, pageContent);
+  let removePageRoutesPromise = pagesController.removePageRoutes(pageId, destinations);
+  let upsertPageRoutesPromise = pagesController.upsertPageRoutes(pageId, destinations);
 
-    promises.concat(pagesController.removePageRoutes(pageId, destinations));
-    promises = promises.concat(destinations.map(destination => {
-      return pagesController.upsertPageRoutes(pageId, destination).then(result => {
-        return result.status;
-      });
-    }));
-
-    Promise.all(promises).then(results => {
-      if (results.every(result => result === 204)) {
+  let promises = [updatePagePromise, removePageRoutesPromise, upsertPageRoutesPromise];
+  Promise.all(promises).then(results => {
+    if (results.every(result => result.status === 0)) {
+      if (destinations.some(destination => destination.id)) {
+        return pagesController.findPageAndNextPagesById(pageId).then(page => {
+          return res.status(201).json(page);
+        });
+      } else {
         return res.sendStatus(204);
       }
-    });
+    } else {
+      return res.sendStatus(400);
+    }
+  }).catch(error => {
+    return res.sendStatus(500);
   });
 });
 
