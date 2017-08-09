@@ -125,11 +125,18 @@ module.exports = {
           };
         });
 
+        let serializedGenres = story.Genres.map(genre => {
+          return {
+            id: genre.id,
+            genre: genre.genre
+          };
+        });
+
         return {
           id: story.id,
           title: story.title,
           authors: serializedAuthors,
-          genres: story.Genres.map(genre => genre.genre),
+          genres: serializedGenres,
           published: story.published,
           description: shortenedDescription,
           firstPublishedAt: story.firstPublishedAt,
@@ -159,13 +166,20 @@ module.exports = {
         };
       });
 
+      let serializedGenres = story.Genres.map(genre => {
+        return {
+          id: genre.id,
+          genre: genre.genre
+        };
+      });
+
       let serializedStory = {
         id: story.id,
         title: story.title,
         authors: serializedAuthors,
         description: story.description,
         firstPageId: story.firstPageId,
-        genres: story.Genres.map(genre => genre.genre),
+        genres: serializedGenres,
         firstPublishedAt: story.firstPublishedAt
       };
 
