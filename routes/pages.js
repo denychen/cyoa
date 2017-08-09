@@ -44,7 +44,7 @@ router.put('/:pageId', authentication.isAuthenticated, authentication.isAuthor, 
   let promises = [updatePagePromise, removePageRoutesPromise, upsertPageRoutesPromise];
   Promise.all(promises).then(results => {
     if (results.every(result => result.status === 0)) {
-      if (destinations.some(destination => destination.id)) {
+      if (destinations.some(destination => destination.pageId)) {
         return pagesController.findPageAndNextPagesById(pageId).then(page => {
           return res.status(201).json(page);
         });
