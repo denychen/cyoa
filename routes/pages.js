@@ -74,7 +74,11 @@ router.delete('/:pageId', authentication.isAuthenticated, authentication.isAutho
   let pageId = req.params.pageId;
 
   pagesController.removePage(pageId).then(result => {
-    return res.json(result);
+    if (result === null) {
+      return res.sendStatus(403);
+    } else {
+      return res.json(result);
+    }
   });
 });
 

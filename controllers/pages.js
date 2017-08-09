@@ -112,12 +112,20 @@ module.exports = {
   },
 
   removePage(pageId) {
-    return Page.destroy({
-      where: { id: pageId }
-    }).then(page => {
-      return {
-        id: pageId
-      };
+    return Story.findOne({
+      where: { firstPageId: pageId}
+    }).then(story => {
+      if (!story) {
+        return Page.destroy({
+          where: { id: pageId }
+        }).then(page => {
+          return {
+            id: pageId
+          };
+        });
+      } else {
+        return null;
+      }
     });
   },
 
