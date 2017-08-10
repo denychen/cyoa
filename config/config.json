@@ -22,5 +22,7 @@
   },
   "jwtTokenSecret": "denychen",
   "maxTitleLength": 150,
-  "maxPremiseLength": 1000
+  "maxPremiseLength": 1000,
+  "maxPageNameLength": 50,
+  "maxPageContentLength": 3000
 }

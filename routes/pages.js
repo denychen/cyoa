@@ -5,6 +5,7 @@ var router = express.Router();
 
 var pagesController = require('../controllers/pages');
 var authentication = require('../middlewares/authentication');
+var storyValidation = require('../middlewares/storyValidation');
 
 /* GET page listing. */
 router.get('/:pageId', function(req, res, next) {
@@ -29,7 +30,7 @@ router.post('/', authentication.isAuthenticated, authentication.isAuthor, functi
 });
 
 /* PUT page */
-router.put('/:pageId', authentication.isAuthenticated, authentication.isAuthor, function(req, res, next) {
+router.put('/:pageId', authentication.isAuthenticated, authentication.isAuthor, storyValidation.pageNameContentLengths, function(req, res, next) {
   let page = req.body.page;
 
   let pageId = req.params.pageId;
