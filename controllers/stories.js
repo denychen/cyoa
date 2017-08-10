@@ -98,17 +98,30 @@ module.exports = {
   },
 
   findAll(hasUser, user) {
+    let userWhere = null;
+    let storyWhere = null;
+    let limit = null;
+    let order = [];
+
+    if (hasUser) {
+      order.push(['updatedAt', 'DESC']);
+      userWhere = { id: user.id };
+    } else {
+      limit = 5;
+      order.push(['firstPublishedAt', 'DESC']);
+      storyWhere = { published: true };
+    }
+
     return Story.findAll({
       include: [{
         model: Genre
       }, {
         model: User,
-        where: hasUser ? { id: user.id } : null
+        where: userWhere
       }],
-      order: [
-        [Sequelize.literal('`users.StoryUser.createdAt`'), 'ASC']
-      ],
-      where: hasUser ? null : { published: true }
+      limit: limit,
+      order: order,
+      where: storyWhere
     }).then(stories => {
       let serializedStories = stories.map(story => {
         let shortenedDescription = story.description;
