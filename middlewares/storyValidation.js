@@ -9,7 +9,7 @@ module.exports = {
 
     if (title.length > config.maxTitleLength) {
       return next(new StoryError(`Max title length is ${config.maxTitleLength} characters`, 400));
-    } else if (description.length > config.maxPremiseLength) {
+    } else if (description && description.length > config.maxPremiseLength) {
       return next(new StoryError(`Max premise length is ${config.maxPremiseLength} characters`, 400));
     }
 
@@ -35,5 +35,7 @@ module.exports = {
     if (genres.length > config.maxGenreCount) {
       return next(new StoryError(`Max genre count is ${config.maxGenreCount}`, 400));
     }
+
+    return next();
   }
 };
