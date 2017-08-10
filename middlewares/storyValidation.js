@@ -27,5 +27,13 @@ module.exports = {
     }
 
     return next();
+  },
+
+  genreCount(req, res, next) {
+    let genres = req.body.story.genres;
+
+    if (genres.length > config.maxGenreCount) {
+      return next(new StoryError(`Max genre count is ${config.maxGenreCount}`, 400));
+    }
   }
 };

@@ -8,7 +8,7 @@ var authentication = require('../middlewares/authentication');
 var storyValidation = require('../middlewares/storyValidation');
 
 /* POST stories */
-router.post('/', authentication.isAuthenticated, storyValidation.titlePremiseLengths, function(req, res, next) {
+router.post('/', authentication.isAuthenticated, storyValidation.titlePremiseLengths, storyValidation.genreCount, function(req, res, next) {
   let story = req.body.story;
 
   let title = story.title;
@@ -22,7 +22,7 @@ router.post('/', authentication.isAuthenticated, storyValidation.titlePremiseLen
 });
 
 /* PUT stories */
-router.put('/:storyId', authentication.isAuthenticated, authentication.isAuthor, storyValidation.titlePremiseLengths, function(req, res, next) {
+router.put('/:storyId', authentication.isAuthenticated, authentication.isAuthor, storyValidation.genreCount, storyValidation.titlePremiseLengths, function(req, res, next) {
   let story = req.body.story;
 
   let storyId = req.params.storyId;
