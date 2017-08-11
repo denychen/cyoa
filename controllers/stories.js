@@ -97,7 +97,7 @@ module.exports = {
     });
   },
 
-  findAll(hasUser, user) {
+  findAll(hasUser, user, lastStoryId) {
     let userWhere = null;
     let storyWhere = null;
     let limit = null;
@@ -112,55 +112,70 @@ module.exports = {
       storyWhere = { published: true };
     }
 
-    return Story.findAll({
-      include: [{
-        model: Genre
-      }, {
-        model: User,
-        where: userWhere
-      }],
-      limit: limit,
-      order: order,
-      where: storyWhere
-    }).then(stories => {
-      let serializedStories = stories.map(story => {
-        let shortenedDescription = story.description;
-        let maxDescriptionLength = 140;
+    let storyPromise = function() {
+      return Story.findAll({
+        include: [{
+          model: Genre
+        }, {
+          model: User,
+          where: userWhere
+        }],
+        limit: limit,
+        order: order,
+        where: storyWhere
+      }).then(stories => {
+        let serializedStories = stories.map(story => {
+          let shortenedDescription = story.description;
+          let maxDescriptionLength = 140;
 
-        if (shortenedDescription && shortenedDescription.length > maxDescriptionLength) {
-          shortenedDescription = shortenedDescription.substring(0, maxDescriptionLength).concat('…');
-        }
+          if (shortenedDescription && shortenedDescription.length > maxDescriptionLength) {
+            shortenedDescription = shortenedDescription.substring(0, maxDescriptionLength).concat('…');
+          }
 
-        let serializedAuthors = story.Users.map(user => {
+          let serializedAuthors = story.Users.map(user => {
+            return {
+              id: user.id,
+              username: user.username,
+            };
+          });
+
+          let serializedGenres = story.Genres.map(genre => {
+            return {
+              id: genre.id,
+              genre: genre.genre
+            };
+          });
+
           return {
-            id: user.id,
-            username: user.username,
-          };
-        });
-
-        let serializedGenres = story.Genres.map(genre => {
-          return {
-            id: genre.id,
-            genre: genre.genre
+            id: story.id,
+            title: story.title,
+            authors: serializedAuthors,
+            genres: serializedGenres,
+            published: story.published,
+            description: shortenedDescription,
+            firstPublishedAt: story.firstPublishedAt,
+            createdAt: story.createdAt
           };
         });
 
         return {
-          id: story.id,
-          title: story.title,
-          authors: serializedAuthors,
-          genres: serializedGenres,
-          published: story.published,
-          description: shortenedDescription,
-          firstPublishedAt: story.firstPublishedAt,
-          createdAt: story.createdAt
+          stories: serializedStories
         };
       });
+    }
 
-      return {
-        stories: serializedStories
-      };
-    });
+    if (lastStoryId) {
+      return Story.findOne({
+        where: { id: lastStoryId }
+      }).then(story => {
+        storyWhere.firstPublishedAt = {
+          lt: story.firstPublishedAt
+        }
+        return storyPromise();
+      });
+    } else {
+      return storyPromise();
+    }
   },
 
   findById(id, includePages) {
