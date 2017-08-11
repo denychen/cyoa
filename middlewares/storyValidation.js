@@ -22,7 +22,7 @@ module.exports = {
 
     if (name.length > config.maxPageNameLength) {
       return next(new StoryError(`Max page title length is ${config.maxPageNameLength} characters`, 400));
-    } else if (content.length > config.maxPageContentLength) {
+    } else if (content && content.length > config.maxPageContentLength) {
       return next(new StoryError(`Max page content length is ${config.maxPageContentLength} characters`, 400));
     }
 
