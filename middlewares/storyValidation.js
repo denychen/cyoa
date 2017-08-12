@@ -29,6 +29,16 @@ module.exports = {
     return next();
   },
 
+  pathCount(req, res, next) {
+    let paths = req.body.page.destinations;
+
+    if (paths.length > config.maxPathCount) {
+      return next(new StoryError(`Max path count is ${config.maxPathCount}`, 400));
+    }
+
+    return next();
+  },
+
   genreCount(req, res, next) {
     let genres = req.body.story.genres;
 

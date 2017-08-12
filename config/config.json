@@ -25,5 +25,6 @@
   "maxPremiseLength": 1000,
   "maxPageNameLength": 50,
   "maxPageContentLength": 3000,
+  "maxPathCount": 5,
   "maxGenreCount": 3
 }
