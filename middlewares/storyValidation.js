@@ -20,7 +20,7 @@ module.exports = {
     let name = req.body.page.name;
     let content = req.body.page.content;
 
-    if (name.length > config.maxPageNameLength) {
+    if (name && name.length > config.maxPageNameLength) {
       return next(new StoryError(`Max page title length is ${config.maxPageNameLength} characters`, 400));
     } else if (content && content.length > config.maxPageContentLength) {
       return next(new StoryError(`Max page content length is ${config.maxPageContentLength} characters`, 400));
@@ -32,7 +32,7 @@ module.exports = {
   pathCount(req, res, next) {
     let paths = req.body.page.destinations;
 
-    if (paths.length > config.maxPathCount) {
+    if (paths && paths.length > config.maxPathCount) {
       return next(new StoryError(`Max path count is ${config.maxPathCount}`, 400));
     }
 
@@ -42,7 +42,7 @@ module.exports = {
   genreCount(req, res, next) {
     let genres = req.body.story.genres;
 
-    if (genres.length > config.maxGenreCount) {
+    if (genres && genres.length > config.maxGenreCount) {
       return next(new StoryError(`Max genre count is ${config.maxGenreCount}`, 400));
     }
 
