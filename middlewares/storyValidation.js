@@ -39,6 +39,16 @@ module.exports = {
     return next();
   },
 
+  pathOptionsLengths(req, res, next) {
+    let paths = req.body.page.destinations;
+
+    if (paths.some(path => path.option.length > config.maxPathOptionLength)) {
+      return next(new StoryError(`Max path description length is ${config.maxPathOptionLength}`, 400));
+    }
+
+    return next();
+  },
+
   genreCount(req, res, next) {
     let genres = req.body.story.genres;
 
