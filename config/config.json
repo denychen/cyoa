@@ -21,7 +21,7 @@
     "dialect": "mysql"
   },
   "jwtTokenSecret": "denychen",
-  "maxTitleLength": 150,
+  "maxTitleLength": 70,
   "maxPremiseLength": 1000,
   "maxPageNameLength": 50,
   "maxPageContentLength": 3000,
