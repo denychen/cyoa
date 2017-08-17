@@ -125,6 +125,7 @@ module.exports = {
     }).then(user => {
       if (user) {
         user.resetToken = null;
+        user.token = null;
         user.password = password;
 
         return user.save().then(user => {
