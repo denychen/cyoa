@@ -4,6 +4,7 @@ const User = require('../models').User;
 var NotFoundError = require('../errors/notFoundError');
 var AuthError = require('../errors/authError');
 var AppError = require('../errors/appError');
+const nodemailer = require('nodemailer');
 
 module.exports = {
   signup(email, password, username) {
@@ -69,7 +70,30 @@ module.exports = {
       if (user) {
         user.resetToken = user.generateResetToken();
         return user.save().then(user => {
-          //send user.resetToken to email
+          let transporter = nodemailer.createTransport({
+            host: 'smtp.gmail.com',
+            port: 465,
+            secure: true,
+            auth: {
+                user: 'deny.chen@gmail.com',
+                pass: 'uedxxgmykvmbdhrv'
+            }
+          });
+
+          let mailOptions = {
+            from: '"CYOA" <cyoa@cyoa.com>',
+            to: user.email,
+            subject: 'Password reset instructions',
+            text: `Copy and paste the following link in your browser to reset your password: http://localhost:4200/reset-password?resetToken=${user.resetToken}`,
+            html: `Click <a href='http://localhost:4200/reset-password?resetToken=${user.resetToken}'>here</a> to reset your password`
+          };
+
+          transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                return console.log(error);
+            }
+            console.log('Message %s sent: %s', info.messageId, info.response);
+          });
         });
       }
     });
