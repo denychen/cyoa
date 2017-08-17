@@ -107,18 +107,16 @@ module.exports = {
       return Promise.reject(new TokenError('This token is invalid, so please request another'));
     }
 
-    if (moment(decodedToken.exp).isAfter(moment())) {
-      return User.findOne({
+    if (moment(decodedToken.exp).isBefore(moment())) {
+      User.findOne({
         where: { resetToken: resetToken }
       }).then(user => {
         if (user) {
           user.resetToken = null;
           user.save();
-        } else {
-          return Promise.reject(new TokenError('This token is expired, so please request another'));
         }
       });
-    } else {
+
       return Promise.reject(new TokenError('This token is expired, so please request another'));
     }
 
