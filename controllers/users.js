@@ -62,6 +62,17 @@ module.exports = {
     });
   },
 
+  forgotPassword(email) {
+    return User.findOne({
+      where: { email: email }
+    }).then(user => {
+      user.resetToken = user.generateResetToken();
+      user.save().then(user => {
+        //send user.resetToken to email
+      });
+    });
+  },
+
   findById(userId) {
     return User.findOne({
       where: { id: userId }

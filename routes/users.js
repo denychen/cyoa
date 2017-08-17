@@ -40,6 +40,13 @@ router.post('/signout', authentication.isAuthenticated, function(req, res, next)
   });
 });
 
+router.post('/forgot-password', function(req, res, next) {
+  let email = req.body.email;
+
+  usersController.forgotPassword(email);
+  return res.sendStatus(204);
+});
+
 router.get('/:userId', function(req, res, next) {
   let userId = req.params.userId;
 
