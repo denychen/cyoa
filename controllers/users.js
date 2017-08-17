@@ -66,10 +66,12 @@ module.exports = {
     return User.findOne({
       where: { email: email }
     }).then(user => {
-      user.resetToken = user.generateResetToken();
-      user.save().then(user => {
-        //send user.resetToken to email
-      });
+      if (user) {
+        user.resetToken = user.generateResetToken();
+        user.save().then(user => {
+          //send user.resetToken to email
+        });
+      }
     });
   },
 
