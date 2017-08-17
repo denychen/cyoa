@@ -136,6 +136,8 @@ module.exports = {
             token: user.token
           };
         });
+      } else {
+        return Promise.reject(new TokenError('This token is expired, so please request another'));
       }
     });
   },
