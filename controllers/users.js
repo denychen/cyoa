@@ -108,7 +108,7 @@ module.exports = {
     }
 
     if (moment(decodedToken.exp).isAfter(moment())) {
-      User.findOne({
+      return User.findOne({
         where: { resetToken: resetToken }
       }).then(user => {
         if (user) {
