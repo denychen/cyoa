@@ -59,6 +59,10 @@ module.exports = function(sequelize, DataTypes) {
         notEmpty: true
       }
     },
+    resetToken: {
+      type: DataTypes.STRING,
+      unique: true,
+    },
     createdAt: {
       type: DataTypes.DATE,
       defaultValue: sequelize.literal('NOW()'),
