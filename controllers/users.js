@@ -81,11 +81,10 @@ module.exports = {
           });
 
           let mailOptions = {
-            from: '"CYOA" <cyoa@cyoa.com>',
             to: user.email,
-            subject: 'Password reset instructions',
-            text: `Copy and paste the following link in your browser to reset your password: http://localhost:4200/reset-password?resetToken=${user.resetToken}`,
-            html: `Click <a href='http://localhost:4200/reset-password?resetToken=${user.resetToken}'>here</a> to reset your password`
+            subject: 'CYOA password reset instructions',
+            text: `Copy and paste the following link in your browser to reset your password: http://denychen.com/reset-password?resetToken=${user.resetToken}`,
+            html: `Click <a href='http://denychen.com/reset-password?resetToken=${user.resetToken}'>here</a> to reset your password`
           };
 
           transporter.sendMail(mailOptions, (error, info) => {
