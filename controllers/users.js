@@ -68,8 +68,28 @@ module.exports = {
     }).then(user => {
       if (user) {
         user.resetToken = user.generateResetToken();
-        user.save().then(user => {
+        return user.save().then(user => {
           //send user.resetToken to email
+        });
+      }
+    });
+  },
+
+  resetPassword(resetToken, password) {
+    return User.findOne({
+      where: { resetToken: resetToken }
+    }).then(user => {
+      if (user) {
+        user.resetToken = null;
+        user.password = password;
+
+        return user.save().then(user => {
+          return {
+            id: user.id,
+            email: user.email,
+            username: user.username,
+            token: user.token
+          };
         });
       }
     });

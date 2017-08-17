@@ -47,6 +47,17 @@ router.post('/forgot-password', function(req, res, next) {
   return res.sendStatus(204);
 });
 
+router.post('/reset-password', function(req, res, next) {
+  let resetToken = req.body.resetToken;
+  let password = req.body.password;
+
+  usersController.resetPassword(resetToken, password).then(result => {
+    return res.json({ user: result });
+  }).catch(error => {
+    return res.status(error.status).json(JSON.parse(error.message));
+  });
+});
+
 router.get('/:userId', function(req, res, next) {
   let userId = req.params.userId;
 
