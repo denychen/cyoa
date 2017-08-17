@@ -167,45 +167,45 @@ module.exports = {
     }).then(user => {
       if (user) {
         return user.validatePassword(oldPassword).then(valid => {
-          if (valid) {
-            if (email) {
-              user.email = email;
-            }
+          if (!valid) {
+            return Promise.reject(new AuthError('Old password must be valid', 403)); 
+          }
+          
+          if (email) {
+            user.email = email;
+          }
 
-            if (username) {
-              user.username = username;
-            }
+          if (username) {
+            user.username = username;
+          }
 
-            if (password) {
-              user.password = password;
-            }
+          if (password) {
+            user.password = password;
+          }
 
-            if (email || username || password) {
-              user.token = user.generateToken();
+          if (email || username || password) {
+            user.token = user.generateToken();
 
-              return user.save().then(user => {
-                return {
-                  id: user.id,
-                  email: user.email,
-                  username: user.username,
-                  token: user.token
-                };
-              }).catch(error => {
-                return Promise.reject(new AppError());
-              });
-            } else {
+            return user.save().then(user => {
               return {
                 id: user.id,
                 email: user.email,
                 username: user.username,
                 token: user.token
               };
-            }
+            }).catch(error => {
+              return Promise.reject(new AppError());
+            });
           } else {
-            return Promise.reject(new AuthError('Password must be valid', 403)); 
+            return {
+              id: user.id,
+              email: user.email,
+              username: user.username,
+              token: user.token
+            };
           }
         }).catch(error => {
-          return Promise.reject(new AuthError('Password must be valid', 403));
+          return Promise.reject(error, 403);
         });
       } else {
         return Promise.reject(new NotFoundError('Unable to find user'));
