@@ -107,7 +107,7 @@ module.exports = {
       return Promise.reject(new TokenError('This token is invalid, so please request another'));
     }
 
-    if (moment(decodedToken.exp).isBefore(moment())) {
+    if (moment(decodedToken.exp).isAfter(moment())) {
       User.findOne({
         where: { resetToken: resetToken }
       }).then(user => {
