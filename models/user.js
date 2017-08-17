@@ -108,15 +108,7 @@ module.exports = function(sequelize, DataTypes) {
   User.prototype.validatePassword = function(password) {
     return bcrypt.compare(password, this.password);
   };
-
-  User.prototype.generateResetToken = function() {
-    let expiration = moment().add(2, 'days').valueOf();
-
-    return jwt.encode({
-      exp: expiration
-    }, config.jwtTokenSecret);
-  };
-
+  
   User.prototype.generateToken = function() {
     let expiration = moment().add(7, 'days').valueOf();
 

@@ -3,8 +3,12 @@
 const User = require('../models').User;
 var NotFoundError = require('../errors/notFoundError');
 var AuthError = require('../errors/authError');
+var TokenError = require('../errors/tokenError');
 var AppError = require('../errors/appError');
 const nodemailer = require('nodemailer');
+let config = require('../config/config.json');
+let moment = require('moment');
+let jwt = require('jwt-simple');
 
 module.exports = {
   signup(email, password, username) {
@@ -68,7 +72,9 @@ module.exports = {
       where: { email: email }
     }).then(user => {
       if (user) {
-        user.resetToken = user.generateResetToken();
+        user.resetToken = jwt.encode({
+          exp: moment().add(2, 'days').valueOf()
+        }, config.jwtTokenSecret);
         return user.save().then(user => {
           let transporter = nodemailer.createTransport({
             host: 'smtp.gmail.com',
@@ -99,6 +105,25 @@ module.exports = {
   },
 
   resetPassword(resetToken, password) {
+    let decodedToken = null;
+    try {
+      decodedToken = jwt.decode(resetToken, config.jwtTokenSecret);
+    } catch(error) {
+      return Promise.reject(new TokenError('This token is invalid, so please request another'));
+    }
+
+    if (moment(decodedToken.exp).isBefore(moment())) {
+      User.findOne({
+        where: { resetToken: resetToken }
+      }).then(user => {
+        if (user) {
+          user.resetToken = null;
+          user.save();
+        }
+      });
+      return Promise.reject(new TokenError('This token is expired, so please request another'));
+    }
+
     return User.findOne({
       where: { resetToken: resetToken }
     }).then(user => {
