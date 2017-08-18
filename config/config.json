@@ -27,5 +27,6 @@
   "maxPageContentLength": 3000,
   "maxPathCount": 5,
   "maxPathOptionLength": 30,
-  "maxGenreCount": 3
+  "maxGenreCount": 3,
+  "minimumPasswordLength": 8
 }

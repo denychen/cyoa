@@ -3,9 +3,10 @@ var router = express.Router();
 
 var usersController = require('../controllers/users');
 var authentication = require('../middlewares/authentication');
+var userValidation = require('../middlewares/userValidation');
 
 /* POST users */
-router.post('/', function(req, res, next) {
+router.post('/', userValidation.passwordRequirement, function(req, res, next) {
   let user = req.body.user;
 
   let email = user.email;
@@ -68,7 +69,7 @@ router.get('/:userId', function(req, res, next) {
   });
 });
 
-router.put('/', authentication.isAuthenticated, function(req, res, next) {
+router.put('/', authentication.isAuthenticated, userValidation.passwordRequirement,function(req, res, next) {
   let user = req.user;
   let email = req.body.email;
   let username = req.body.username;

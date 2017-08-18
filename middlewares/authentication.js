@@ -28,7 +28,7 @@ module.exports = {
       return next(new AuthError('Token expired'), 401);
     }
 
-    User.findOne({
+    return User.findOne({
       where: { token: token }
     }).then(user => {
       if (!user) {
@@ -67,8 +67,8 @@ module.exports = {
       storyIdPromise = Promise.resolve(storyId);
     }
 
-    storyIdPromise.then(storyId => {
-      StoryUser.findAll({
+    return storyIdPromise.then(storyId => {
+      return StoryUser.findAll({
         where: { storyId: storyId }
       }).then(storyUsers => {
         let isAuthor = storyUsers.some(storyUser => storyUser.userId === userId);
