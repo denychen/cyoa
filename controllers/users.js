@@ -82,7 +82,7 @@ module.exports = {
             secure: true,
             auth: {
                 user: 'deny.chen@gmail.com',
-                pass: 'uedxxgmykvmbdhrv'
+                pass: process.env.SMTP_PASSWORD
             }
           });
 
