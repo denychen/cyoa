@@ -1,21 +1,18 @@
 {
   "development": {
     "username": "root",
-    "password": "dc0110dc",
     "database": "development",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "test": {
     "username": "root",
-    "password": "dc0110dc",
     "database": "test",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "production": {
     "username": "root",
-    "password": "dc0110dc",
     "database": "production",
     "host": "127.0.0.1",
     "dialect": "mysql"
