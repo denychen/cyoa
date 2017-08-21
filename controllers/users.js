@@ -6,7 +6,6 @@ var AuthError = require('../errors/authError');
 var TokenError = require('../errors/tokenError');
 var AppError = require('../errors/appError');
 const nodemailer = require('nodemailer');
-let config = require('../config/config.json');
 let moment = require('moment');
 let jwt = require('jwt-simple');
 
@@ -74,7 +73,7 @@ module.exports = {
       if (user) {
         user.resetToken = jwt.encode({
           exp: moment().add(2, 'days').valueOf()
-        }, config.jwtTokenSecret);
+        }, process.env.JWT_TOKEN_SECRET);
         return user.save().then(user => {
           let transporter = nodemailer.createTransport({
             host: 'smtp.gmail.com',
@@ -102,7 +101,7 @@ module.exports = {
   resetPassword(resetToken, password) {
     let decodedToken = null;
     try {
-      decodedToken = jwt.decode(resetToken, config.jwtTokenSecret);
+      decodedToken = jwt.decode(resetToken, process.env.JWT_TOKEN_SECRET);
     } catch(error) {
       return Promise.reject(new TokenError('This token is invalid, so please request another'));
     }
