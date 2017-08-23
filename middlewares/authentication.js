@@ -77,7 +77,7 @@ module.exports = {
           return next(new AuthError('User not authorized'), 403);
         }
 
-        next();
+        return next();
       }).catch(error => {
         console.log(error);
         return next(new AppError());
