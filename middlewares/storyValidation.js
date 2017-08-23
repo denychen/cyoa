@@ -1,5 +1,5 @@
 'use strict'
-let config = require('../config/config.json');
+let config = require('../config/config.js');
 var StoryError = require('../errors/storyError');
 
 module.exports = {
