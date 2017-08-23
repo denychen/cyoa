@@ -2,7 +2,6 @@
 let bcrypt = require('bcrypt');
 let jwt = require('jwt-simple');
 let moment = require('moment');
-let config = require('../config/config.json');
 
 module.exports = function(sequelize, DataTypes) {
   var User = sequelize.define('User', {
@@ -115,7 +114,7 @@ module.exports = function(sequelize, DataTypes) {
     return jwt.encode({
       iss: this.id,
       exp: expiration
-    }, config.jwtTokenSecret);
+    }, process.env.JWT_TOKEN_SECRET);
   };
 
   return User;

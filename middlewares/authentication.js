@@ -1,5 +1,4 @@
 'use strict'
-let config = require('../config/config.json');
 let jwt = require('jwt-simple');
 let moment = require('moment');
 const User = require('../models').User;
@@ -22,7 +21,7 @@ module.exports = {
       return next(new AuthError('Missing token'), 401);
     }
 
-    let decodedToken = jwt.decode(token, config.jwtTokenSecret);
+    let decodedToken = jwt.decode(token, process.env.JWT_TOKEN_SECRET);
 
     if (moment().isAfter(decodedToken.exp)) {
       return next(new AuthError('Token expired'), 401);
