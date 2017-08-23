@@ -49,7 +49,7 @@ module.exports = {
     });
   },
 
-  upsertPageRoutes(pageId, destinations) {
+  updatePageRoutes(pageId, destinations) {
     let updatedDestinations = destinations.map(destination => {
       return {
         id: destination.id,
@@ -68,11 +68,15 @@ module.exports = {
           id: pageRoute.destinationId
         };
       });
-      
-      return {
-        status: 0,
-        result: result
-      };
+
+      return module.exports.removePageRoutes(pageId, serializedDestinations).then(() => {
+        return {
+          status: 0,
+          result: result
+        };
+      }).catch(error => {
+        return false;
+      });
     }).catch(error => {
       return false;
     });
@@ -82,7 +86,7 @@ module.exports = {
     return PageRoute.destroy({
       where: {
         originId: pageId,
-        id: {
+        destinationId: {
           $notIn: destinations.map(destination => destination.id)
         }
       }

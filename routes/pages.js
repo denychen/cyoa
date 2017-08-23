@@ -39,10 +39,9 @@ router.put('/:pageId', authentication.isAuthenticated, authentication.isAuthor, 
   let destinations = page.destinations;
 
   let updatePagePromise = pagesController.updatePage(pageId, pageName, pageContent);
-  let removePageRoutesPromise = pagesController.removePageRoutes(pageId, destinations);
-  let upsertPageRoutesPromise = pagesController.upsertPageRoutes(pageId, destinations);
+  let updatePageRoutesPromise = pagesController.updatePageRoutes(pageId, destinations);
 
-  let promises = [updatePagePromise, removePageRoutesPromise, upsertPageRoutesPromise];
+  let promises = [updatePagePromise, updatePageRoutesPromise];
   Promise.all(promises).then(results => {
     if (results.every(result => result.status === 0)) {
       if (destinations.some(destination => destination.pageId)) {
