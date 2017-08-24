@@ -1,3 +1,5 @@
+let moment = require('moment');
+
 module.exports = class AppError extends Error {
   constructor(message, status) {
     let errorMessage = {
@@ -19,7 +21,12 @@ module.exports = class AppError extends Error {
   };
 
   logError(message) {
-    let asterisks = Array(message.length + 19).fill('*').join("");
-    console.error(`\n${asterisks}\n***** ERROR: ${message} *****\n${asterisks}\n`);
+    let currentTime = moment().toString();
+    let messageLonger = message.length > currentTime.length;
+
+    let asterisks = Array(Math.max(message.length + 7, currentTime.length) + 12).fill('*').join("").concat('\n');
+    let fillAsterisks = Array(Math.abs((message.length + 7) - currentTime.length) + 5).fill('*').join("").concat('\n');
+    let errorMessage = asterisks.concat(`***** ${currentTime} ${messageLonger ? fillAsterisks : '*****\n'}`).concat(`***** ERROR: ${message} ${messageLonger ? '*****\n' : fillAsterisks}`).concat(asterisks);
+    console.error(`\n${errorMessage}`);
   };
 };
