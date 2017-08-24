@@ -24,7 +24,7 @@ module.exports = {
   'maxPremiseLength': 1000,
   'maxPageNameLength': 50,
   'maxPageContentLength': 3000,
-  'maxPathCount': 5,
+  'maxPathCount': 3,
   'maxPathOptionLength': 30,
   'maxGenreCount': 3,
   'minimumPasswordLength': 8
