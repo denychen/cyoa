@@ -53,32 +53,21 @@ router.get('/', authentication.conditionalIsAuthenticated, function(req, res, ne
   let hasUser = req.query.user;
   let user = req.user;
   let lastStoryId = req.query.id;
+  let type = req.query.type;
 
-  storiesController.findAll(hasUser, user, lastStoryId).then(result => {
+  storiesController.findAll(hasUser, user, lastStoryId, type).then(result => {
     return res.json(result);
   });
 });
 
 /* GET story listing */
-router.get('/:storyId', function(req, res, next) {
+router.get('/:storyId', authentication.conditionalIsAuthor, function(req, res, next) {
   let storyId = req.params.storyId;
   let includePages = req.query.include === 'pages';
   
-  let findStory = () => {
-    storiesController.findById(storyId, includePages).then(result => {
-      return res.json(result);
-    });
-  }
-
-  let isAuthor = () => {
-    authentication.isAuthor(req, res, findStory);
-  }
-
-  if (includePages) {
-    authentication.isAuthenticated(req, res, isAuthor);
-  } else {
-    findStory();
-  }
+  storiesController.findById(storyId, includePages).then(result => {
+    return res.json(result);
+  });
 });
 
 /* DELETE story listing */

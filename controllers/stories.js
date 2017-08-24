@@ -97,17 +97,17 @@ module.exports = {
     });
   },
 
-  findAll(hasUser, user, lastStoryId) {
+  findAll(hasUser, user, lastStoryId, type) {
     let userWhere = null;
     let storyWhere = null;
-    let limit = null;
+    let limit = 5;
     let order = [];
 
     if (hasUser) {
       order.push(['updatedAt', 'DESC']);
       userWhere = { id: user.id };
+      storyWhere = { published: type === 'published' };
     } else {
-      limit = 5;
       order.push(['firstPublishedAt', 'DESC']);
       storyWhere = { published: true };
     }
@@ -162,14 +162,20 @@ module.exports = {
           stories: serializedStories
         };
       });
-    }
+    };
 
     if (lastStoryId) {
       return Story.findOne({
         where: { id: lastStoryId }
       }).then(story => {
-        storyWhere.firstPublishedAt = {
-          lt: story.firstPublishedAt
+        if (hasUser) {
+          storyWhere.updatedAt = {
+            lt: story.updatedAt
+          }
+        } else {
+          storyWhere.firstPublishedAt = {
+            lt: story.firstPublishedAt
+          }
         }
         return storyPromise();
       });

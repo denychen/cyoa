@@ -95,5 +95,17 @@ module.exports = {
     } else {
       return next();
     }
+  },
+
+  conditionalIsAuthor(req, res, next) {
+    let includePages = req.query.include === 'pages';
+    
+    if (includePages) {
+      return module.exports.isAuthenticated(req, res, () => {
+        return module.exports.isAuthor(req, res, next);
+      });
+    } else {
+      return next();
+    }
   }
 };
