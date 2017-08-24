@@ -7,7 +7,9 @@ module.exports = {
     let title = req.body.story.title;
     let description = req.body.story.description;
 
-    if (title.length > config.maxTitleLength) {
+    if (!title) {
+      return next(new StoryError('Story needs a title', 400));
+    } else if (title.length > config.maxTitleLength) {
       return next(new StoryError(`Max title length is ${config.maxTitleLength} characters`, 400));
     } else if (description && description.length > config.maxPremiseLength) {
       return next(new StoryError(`Max premise length is ${config.maxPremiseLength} characters`, 400));
@@ -42,7 +44,7 @@ module.exports = {
   pathOptionsLengths(req, res, next) {
     let paths = req.body.page.destinations;
 
-    if (paths.some(path => path.option.length > config.maxPathOptionLength)) {
+    if (paths.some(path => (path.option && path.option.length > config.maxPathOptionLength))) {
       return next(new StoryError(`Max path description length is ${config.maxPathOptionLength}`, 400));
     }
 
@@ -52,7 +54,9 @@ module.exports = {
   genreCount(req, res, next) {
     let genres = req.body.story.genres;
 
-    if (genres && genres.length > config.maxGenreCount) {
+    if (!genres || genres.length === 0) {
+      return next('Story needs at least one genre', 400);
+    } else if (genres && genres.length > config.maxGenreCount) {
       return next(new StoryError(`Max genre count is ${config.maxGenreCount}`, 400));
     }
 
