@@ -101,8 +101,12 @@ module.exports = {
     let includePages = req.query.include === 'pages';
     
     if (includePages) {
-      return module.exports.isAuthenticated(req, res, () => {
-        return module.exports.isAuthor(req, res, next);
+      return module.exports.isAuthenticated(req, res, error => {
+        if (!error) {
+          return module.exports.isAuthor(req, res, next);
+        } else {
+          return next(error);
+        }
       });
     } else {
       return next();
