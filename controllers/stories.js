@@ -221,17 +221,15 @@ module.exports = {
         return Page.findAll({
           include: [{
             model: Page,
+            as: 'destinations',
             through: {
               attributes: ['id', 'destinationId', 'option', 'order']
             },
-            as: 'destinations'
           }],
-          order: [
-            [Sequelize.literal('`destinations.PageRoute.order`'), 'ASC']
-          ],
           where: { storyId: story.id },
           order: [
-            ['createdAt', 'ASC']
+            ['createdAt', 'ASC'],
+            [Sequelize.literal('`destinations.PageRoute.order`'), 'ASC']
           ],
           raw: true
         }).then(pages => {
