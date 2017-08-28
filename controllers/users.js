@@ -87,7 +87,7 @@ module.exports = {
 
           let mailOptions = {
             to: user.email,
-            subject: 'CYOA password reset instructions',
+            subject: '50 Million Dollars password reset instructions',
             text: `Copy and paste the following link in your browser to reset your password: http://50milliondollars.com/reset-password?resetToken=${user.resetToken}`,
             html: `Click <a href='http://50milliondollars.com/reset-password?resetToken=${user.resetToken}'>here</a> to reset your password`
           };
