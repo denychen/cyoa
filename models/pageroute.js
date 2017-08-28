@@ -48,16 +48,16 @@ module.exports = function(sequelize, DataTypes) {
       }
     },
     createdAt: {
-      type: DataTypes.DATE,
-      defaultValue: sequelize.literal('NOW()'),
+      type: DataTypes.DATE(3),
+      defaultValue: sequelize.literal('NOW(3)'),
       allowNull: false,
       validate: {
         notEmpty: true
       }
     },
     updatedAt: {
-      type: DataTypes.DATE,
-      defaultValue: sequelize.literal('NOW()'),
+      type: DataTypes.DATE(3),
+      defaultValue: sequelize.literal('NOW(3)'),
       allowNull: false,
       validate: {
         notEmpty: true

@@ -6,7 +6,7 @@ module.exports = {
       'Stories',
       'firstPublishedAt',
       {
-        type: Sequelize.DATE,
+        type: Sequelize.DATE(3),
       }
     )
   },
