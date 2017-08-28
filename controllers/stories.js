@@ -174,7 +174,7 @@ module.exports = {
           }
         } else {
           storyWhere.firstPublishedAt = {
-            lt: story.firstPublishedAt
+            gt: story.firstPublishedAt
           }
         }
         return storyPromise();
